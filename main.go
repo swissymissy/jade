@@ -17,8 +17,8 @@ import (
 	"github.com/joho/godotenv"
 	_ "modernc.org/sqlite"
 
-	"github.com/swissymissy/jade/internal/handlers"
 	"github.com/swissymissy/jade/internal/database"
+	"github.com/swissymissy/jade/internal/handlers"
 )
 
 func main() {
@@ -57,11 +57,13 @@ func main() {
 		log.Fatal("JWT_SECRET is not set")
 	}
 
+	// get s3 bucket name
 	s3Bucket := os.Getenv("S3_BUCKET")
 	if s3Bucket == "" {
 		log.Fatal("S3_BUCKET environment variable is not set")
 	}
 
+	// get s3 region
 	s3Region := os.Getenv("S3_REGION")
 	if s3Region == "" {
 		log.Fatal("S3_REGION environment variable is not set")
@@ -102,6 +104,7 @@ func main() {
 	// register handlers
 	// public routes
 	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
+	mux.HandleFunc("GET /api/products/{id}", apicfg.HandlerGetOneProduct)
 
 	// run server in background
 	go func() {

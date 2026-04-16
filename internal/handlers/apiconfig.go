@@ -1,8 +1,8 @@
 package handlers
 
 import (
-	"github.com/swissymissy/jade/internal/database"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/swissymissy/jade/internal/database"
 )
 
 type ApiConfig struct {
