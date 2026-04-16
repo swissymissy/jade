@@ -68,15 +68,17 @@ WHERE is_available = 1
 AND price >= ?
 AND price <= ?
 ORDER BY created_at DESC
+LIMIT ?
 `
 
 type FilterProductByPriceParams struct {
 	Price   float64
 	Price_2 float64
+	Limit   int64
 }
 
 func (q *Queries) FilterProductByPrice(ctx context.Context, arg FilterProductByPriceParams) ([]Product, error) {
-	rows, err := q.db.QueryContext(ctx, filterProductByPrice, arg.Price, arg.Price_2)
+	rows, err := q.db.QueryContext(ctx, filterProductByPrice, arg.Price, arg.Price_2, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
