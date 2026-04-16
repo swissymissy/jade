@@ -5,17 +5,18 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
 // create new access token for when admin log in
-func MakeJWT(admindEmail string, serverSecretToken string) (string, error) {
+func MakeJWT(adminID uuid.UUID, serverSecretToken string) (string, error) {
 
 	// create a new registered claim
 	clain := jwt.RegisteredClaims{
 		Issuer: "jade-access",
 		IssueAt: jwt.NewNumericDate(time.Now().UTC())
 		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(24*time.Hour)),
-		Subject: admindEmail,
+		Subject: adminID.String(),
 	}
 
 	// create new token
@@ -31,7 +32,7 @@ func MakeJWT(admindEmail string, serverSecretToken string) (string, error) {
 }
 
 // check admin's token
-func ValidateJWT(tokenString, serverSecretToken string) (string, error) {
+func ValidateJWT(tokenString, serverSecretToken string) (uuid.UUID, error) {
 	// create new empty claim struct to be filled
 	claim := &jwt.RegisteredClaims{}
 
@@ -44,8 +45,14 @@ func ValidateJWT(tokenString, serverSecretToken string) (string, error) {
 		},
 	)
 	if err != nil {
-		return "", fmt.Errorf("Token is expired or bad signature: %w", err)
+		return uuid.Nil, fmt.Errorf("Token is expired or bad signature: %w", err)
 	}
 
-	return claim.Subject, nil
+	// retrieve admin ID from claim's subject
+	adminIDstr := clain.Subject
+	adminID, err := uuid.Parse(adminIDstr)
+	if err != nil {
+		return uuid.Nil, fmt.Errorf("Error converting string to uuid: %w", err)
+	}
+	return adminID, nil
 }
