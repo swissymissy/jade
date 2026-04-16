@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-// get one product
+// get one single product based on product's ID
 func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Request) {
 	// get product id from url
 	productIDStr := r.PathValue("id")

@@ -19,8 +19,10 @@ AND (
     name LIKE '%'|| ? || '%'
     OR description LIKE '%' || ? || '%'
     OR type LIKE '%' || ? || '%'
+    OR slug LIKE '%' || ? || '%'
 )
-ORDER BY created_at DESC;
+ORDER BY created_at DESC
+LIMIT ?;
 
 -- name: FilterProductByPrice :many
 SELECT * FROM products
