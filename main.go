@@ -13,21 +13,13 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/joho/godotenv"
-	"github.com/swissymissy/jade/internal/database"
-	"github.com/swissymissy/jade/internal/handlers"
-	_ "modernc.org/sqlite"
-)
 
-type ApiConfig struct {
-	port      string
-	platform  string
-	db        *database.Queries
-	jwtSecret string
-	s3Bucket  string
-	s3Region  string
-	s3Client  *s3.Client
-}
+	"github.com/joho/godotenv"
+	_ "modernc.org/sqlite"
+
+	"github.com/swissymissy/jade/internal/handlers"
+	"github.com/swissymissy/jade/internal/database"
+)
 
 func main() {
 
@@ -57,6 +49,7 @@ func main() {
 	if err := db.Ping(); err != nil {
 		log.Fatal("Cannot connect to database")
 	}
+	dbQuery := database.New(db)
 	log.Println("Connected to database")
 
 	jwtSecret := os.Getenv("JWT_SECRET")
@@ -82,14 +75,14 @@ func main() {
 	s3NewClient := s3.NewFromConfig(awsCfg)
 
 	// initialize apiconfig
-	apicfg := ApiConfig{
-		port:      port,
-		platform:  platform,
-		db:        db,
-		jwtSecret: jwtSecret,
-		s3Bucket:  s3Bucket,
-		s3Region:  s3Region,
-		s3Client:  s3NewClient,
+	apicfg := handlers.ApiConfig{
+		Port:      port,
+		Platform:  platform,
+		DB:        dbQuery,
+		JWTSecret: jwtSecret,
+		S3Bucket:  s3Bucket,
+		S3Region:  s3Region,
+		S3Client:  s3NewClient,
 	}
 
 	// serve mux
