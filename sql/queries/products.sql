@@ -19,15 +19,18 @@ AND (
     name LIKE '%'|| ? || '%'
     OR description LIKE '%' || ? || '%'
     OR type LIKE '%' || ? || '%'
+    OR slug LIKE '%' || ? || '%'
 )
-ORDER BY created_at DESC;
+ORDER BY created_at DESC
+LIMIT ?;
 
 -- name: FilterProductByPrice :many
 SELECT * FROM products
 WHERE is_available = 1
 AND price >= ?
 AND price <= ?
-ORDER BY created_at DESC;
+ORDER BY created_at DESC
+LIMIT ?;
 
 -- name: CreateProduct :one
 INSERT INTO products (name, slug, type, price, quantity, description, video_url)

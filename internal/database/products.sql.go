@@ -68,15 +68,17 @@ WHERE is_available = 1
 AND price >= ?
 AND price <= ?
 ORDER BY created_at DESC
+LIMIT ?
 `
 
 type FilterProductByPriceParams struct {
 	Price   float64
 	Price_2 float64
+	Limit   int64
 }
 
 func (q *Queries) FilterProductByPrice(ctx context.Context, arg FilterProductByPriceParams) ([]Product, error) {
-	rows, err := q.db.QueryContext(ctx, filterProductByPrice, arg.Price, arg.Price_2)
+	rows, err := q.db.QueryContext(ctx, filterProductByPrice, arg.Price, arg.Price_2, arg.Limit)
 	if err != nil {
 		return nil, err
 	}
@@ -207,18 +209,28 @@ AND (
     name LIKE '%'|| ? || '%'
     OR description LIKE '%' || ? || '%'
     OR type LIKE '%' || ? || '%'
+    OR slug LIKE '%' || ? || '%'
 )
 ORDER BY created_at DESC
+LIMIT ?
 `
 
 type SearchProductParams struct {
 	Column1 sql.NullString
 	Column2 sql.NullString
 	Column3 sql.NullString
+	Column4 sql.NullString
+	Limit   int64
 }
 
 func (q *Queries) SearchProduct(ctx context.Context, arg SearchProductParams) ([]Product, error) {
-	rows, err := q.db.QueryContext(ctx, searchProduct, arg.Column1, arg.Column2, arg.Column3)
+	rows, err := q.db.QueryContext(ctx, searchProduct,
+		arg.Column1,
+		arg.Column2,
+		arg.Column3,
+		arg.Column4,
+		arg.Limit,
+	)
 	if err != nil {
 		return nil, err
 	}
