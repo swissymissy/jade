@@ -21,10 +21,10 @@ func (apicfg *ApiConfig) HandlerSearchProduct(w http.ResponseWriter, r *http.Req
 	limit := 20
 	// search for items in database
 	rows, err := apicfg.DB.SearchProduct(r.Context(), database.SearchProductParams{
-		Column1: query,
-		Column2: query,
-		Column3: query,
-		Column4: query,
+		Column1: ToNullString(query),
+		Column2: ToNullString(query),
+		Column3: ToNullString(query),
+		Column4: ToNullString(query),
 		Limit:   int64(limit),
 	})
 	if err != nil {
