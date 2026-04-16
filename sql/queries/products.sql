@@ -1,7 +1,8 @@
 -- name: GetAllProducts :many
 SELECT * FROM products
 WHERE is_available = 1
-ORDER BY created_at DESC;
+ORDER BY created_at DESC
+LIMIT ?;
 
 -- name: GetProductByID :one
 SELECT * FROM products

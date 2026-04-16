@@ -15,6 +15,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/joho/godotenv"
 	"github.com/swissymissy/jade/internal/database"
+	"github.com/swissymissy/jade/internal/handlers"
 	_ "modernc.org/sqlite"
 )
 
@@ -107,7 +108,7 @@ func main() {
 
 	// register handlers
 	// public routes
-	mux.HandleFunc("GET /api/products/", apicfg.HandlerGetAllProducts)
+	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
 
 	// run server in background
 	go func() {

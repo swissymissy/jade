@@ -114,10 +114,11 @@ const getAllProducts = `-- name: GetAllProducts :many
 SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
 WHERE is_available = 1
 ORDER BY created_at DESC
+LIMIT ?
 `
 
-func (q *Queries) GetAllProducts(ctx context.Context) ([]Product, error) {
-	rows, err := q.db.QueryContext(ctx, getAllProducts)
+func (q *Queries) GetAllProducts(ctx context.Context, limit int64) ([]Product, error) {
+	rows, err := q.db.QueryContext(ctx, getAllProducts, limit)
 	if err != nil {
 		return nil, err
 	}
