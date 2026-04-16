@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,11 +11,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/joho/godotenv"
-	_ "modernc.org/sqlite"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
-	"github.com/swissymissy/jade/database"
+	"github.com/joho/godotenv"
+	"github.com/swissymissy/jade/internal/database"
+	_ "modernc.org/sqlite"
 )
 
 type ApiConfig struct {
@@ -81,13 +82,13 @@ func main() {
 
 	// initialize apiconfig
 	apicfg := ApiConfig{
-		port: port,
-		platform: platform,
-		db: db,
+		port:      port,
+		platform:  platform,
+		db:        db,
 		jwtSecret: jwtSecret,
-		s3Bucket: s3Bucket,
-		s3Region: s3Region,
-		s3Client: s3NewClient,
+		s3Bucket:  s3Bucket,
+		s3Region:  s3Region,
+		s3Client:  s3NewClient,
 	}
 
 	// serve mux
@@ -104,7 +105,9 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./frontend/static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
-	// TODO: register handlers here
+	// register handlers
+	// public routes
+	mux.HandleFunc("GET /api/products/", apicfg.HandlerGetAllProducts)
 
 	// run server in background
 	go func() {
