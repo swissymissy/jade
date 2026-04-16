@@ -108,6 +108,11 @@ func main() {
 	mux.HandleFunc("GET /api/productst/search", apicfg.HandlerSearchProduct)
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
+	// TODO: admind routes
+
+	// Auth
+	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
+
 	// run server in background
 	go func() {
 		fmt.Printf("Serving on: http://localhost:%s/static/\n", port)

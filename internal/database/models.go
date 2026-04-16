@@ -8,6 +8,14 @@ import (
 	"database/sql"
 )
 
+type Admin struct {
+	ID           string
+	Email        string
+	PasswordHash string
+	CreatedAt    string
+	UpdatedAt    string
+}
+
 type Product struct {
 	ID          int64
 	Name        string
