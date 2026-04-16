@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -10,13 +11,79 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
+
 	"github.com/joho/godotenv"
+	_ "modernc.org/sqlite"
+
+	"github.com/swissymissy/jade/internal/handlers"
+	"github.com/swissymissy/jade/internal/database"
 )
 
 func main() {
 
 	godotenv.Load()
+
+	platform := os.Getenv("PLATFORM")
+	if platform == "" {
+		log.Fatal("PLATFORM environment variable is not set")
+	}
+
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	dbURL := os.Getenv("DB_PATH")
+	if dbURL == "" {
+		log.Fatal("DB_URL should be set")
+	}
+	// connect to database
+	db, err := sql.Open("sqlite", dbURL)
+	if err != nil {
+		log.Fatal("Can't connect to database", err)
+	}
+	defer db.Close()
+	// ping to verify db connection
+	if err := db.Ping(); err != nil {
+		log.Fatal("Cannot connect to database")
+	}
+	dbQuery := database.New(db)
+	log.Println("Connected to database")
+
+	jwtSecret := os.Getenv("JWT_SECRET")
+	if jwtSecret == "" {
+		log.Fatal("JWT_SECRET is not set")
+	}
+
+	s3Bucket := os.Getenv("S3_BUCKET")
+	if s3Bucket == "" {
+		log.Fatal("S3_BUCKET environment variable is not set")
+	}
+
+	s3Region := os.Getenv("S3_REGION")
+	if s3Region == "" {
+		log.Fatal("S3_REGION environment variable is not set")
+	}
+
+	awsCfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(s3Region))
+	if err != nil {
+		log.Fatal("Failed to load AWS config: %v", err)
+	}
+
+	s3NewClient := s3.NewFromConfig(awsCfg)
+
+	// initialize apiconfig
+	apicfg := handlers.ApiConfig{
+		Port:      port,
+		Platform:  platform,
+		DB:        dbQuery,
+		JWTSecret: jwtSecret,
+		S3Bucket:  s3Bucket,
+		S3Region:  s3Region,
+		S3Client:  s3NewClient,
+	}
 
 	// serve mux
 	mux := http.NewServeMux()
@@ -32,7 +99,9 @@ func main() {
 	fileServer := http.FileServer(http.Dir("./frontend/static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
 
-	// TODO: register handlers here
+	// register handlers
+	// public routes
+	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
 
 	// run server in background
 	go func() {
