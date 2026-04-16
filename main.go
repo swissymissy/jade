@@ -19,6 +19,7 @@ import (
 
 	"github.com/swissymissy/jade/internal/database"
 	"github.com/swissymissy/jade/internal/handlers"
+	"github.com/swissymissy/jade/internal/middleware"
 )
 
 func main() {
@@ -108,7 +109,8 @@ func main() {
 	mux.HandleFunc("GET /api/productst/search", apicfg.HandlerSearchProduct)
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
-	// TODO: admind routes
+	// admind routes - protected
+	
 
 	// Auth
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)

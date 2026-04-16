@@ -8,8 +8,8 @@ import (
 )
 
 // middleware to check for auth
-func AuthRequired(next http.HandleFunc, jwtSecret string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+func AuthRequired(next http.HandlerFunc, jwtSecret string) http.HandlerFunc {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// get token from header
 		token, err := auth.GetBearerToken(r.Header)
 		if err != nil {
@@ -29,5 +29,5 @@ func AuthRequired(next http.HandleFunc, jwtSecret string) http.HandlerFunc {
 		// token is valid, log and let the request go though
 		log.Printf("Authenticated admin: %s\n", adminID)
 		next.ServeHTTP(w, r)
-	}
+	})
 }
