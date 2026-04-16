@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"database/sql"
+	"github.com/google/uuid"
 )
 
 type Product struct {
@@ -16,4 +17,17 @@ type Product struct {
 	VideoUrl    sql.NullString `json:"video"`
 	CreatedAt   string         `json:"created_at"`
 	UpdatedAt   string         `json:"updated_at"`
+}
+
+type AdminLoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password'`
+}
+
+type LoginAdmin struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	CreatedAt string `json:"created_at"`
+	UpdatedAt string `json:"updated_at"`
+	Token     string    `json:"token"`
 }

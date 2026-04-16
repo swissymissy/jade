@@ -1,4 +1,4 @@
-package auth 
+package auth
 
 import (
 	"fmt"
@@ -13,10 +13,10 @@ func MakeJWT(adminID uuid.UUID, serverSecretToken string) (string, error) {
 
 	// create a new registered claim
 	claim := jwt.RegisteredClaims{
-		Issuer: "jade-access",
-		IssuedAt: jwt.NewNumericDate(time.Now().UTC()),
-		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(24*time.Hour)),
-		Subject: adminID.String(),
+		Issuer:    "jade-access",
+		IssuedAt:  jwt.NewNumericDate(time.Now().UTC()),
+		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(24 * time.Hour)),
+		Subject:   adminID.String(),
 	}
 
 	// create new token
@@ -24,7 +24,7 @@ func MakeJWT(adminID uuid.UUID, serverSecretToken string) (string, error) {
 
 	// sign the token wuth server secret key
 	signedKey := []byte(serverSecretToken)
-	signedToken , err := token.SignedString(signedKey)
+	signedToken, err := token.SignedString(signedKey)
 	if err != nil {
 		return "", fmt.Errorf("cannot sign token: %w", err)
 	}
