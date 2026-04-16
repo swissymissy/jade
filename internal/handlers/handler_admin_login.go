@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/swissymissy/jade/internal/auth"
 	"github.com/google/uuid"
+	"github.com/swissymissy/jade/internal/auth"
 )
 
 // admin login handler

@@ -110,10 +110,10 @@ func main() {
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
 	// admind routes - protected
-	
+	mux.HandleFunc("POST /api/admin/products", middleware.AuthRequired(apicfg.HandlerCreateProduct, apicfg.JWTSecret))
 
 	// Auth
-	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
+	mux.HandleFunc("POST /api/auth/login", apicfg.AdminLogin)
 
 	// run server in background
 	go func() {

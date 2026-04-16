@@ -27,7 +27,28 @@ type AdminLoginRequest struct {
 type LoginAdmin struct {
 	ID        uuid.UUID `json:"id"`
 	Email     string    `json:"email"`
-	CreatedAt string `json:"created_at"`
-	UpdatedAt string `json:"updated_at"`
+	CreatedAt string    `json:"created_at"`
+	UpdatedAt string    `json:"updated_at"`
 	Token     string    `json:"token"`
+}
+
+type ProductCreateRequest struct {
+	Name        string  `json:"name"`
+	Type        string  `json:"type"`
+	Price       float64 `json:"price"`
+	Quantity    int64   `json:"quantity"`
+	Description string  `json:"description"`
+}
+
+type ProductResponse struct {
+	ID          int64          `json:"id"`
+	Name        string         `json:"name"`
+	Slug        string         `json:"slug"`
+	Type        string         `json:"type"`
+	Price       float64        `json:"price"`
+	Quantity    int64          `json:"quantity"`
+	Description sql.NullString `json:"description"`
+	VideoUrl    sql.NullString `json:"video_url"`
+	CreatedAt   string         `json:"created_at"`
+	UpdatedAt   string         `json:"updated_at"`
 }
