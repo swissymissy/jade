@@ -12,15 +12,15 @@ import (
 func MakeJWT(adminID uuid.UUID, serverSecretToken string) (string, error) {
 
 	// create a new registered claim
-	clain := jwt.RegisteredClaims{
+	claim := jwt.RegisteredClaims{
 		Issuer: "jade-access",
-		IssueAt: jwt.NewNumericDate(time.Now().UTC())
+		IssuedAt: jwt.NewNumericDate(time.Now().UTC()),
 		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(24*time.Hour)),
 		Subject: adminID.String(),
 	}
 
 	// create new token
-	token := jwt.NewWithClaim(jwt.SigningMethodHS256, claim)
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 
 	// sign the token wuth server secret key
 	signedKey := []byte(serverSecretToken)
@@ -49,7 +49,7 @@ func ValidateJWT(tokenString, serverSecretToken string) (uuid.UUID, error) {
 	}
 
 	// retrieve admin ID from claim's subject
-	adminIDstr := clain.Subject
+	adminIDstr := claim.Subject
 	adminID, err := uuid.Parse(adminIDstr)
 	if err != nil {
 		return uuid.Nil, fmt.Errorf("Error converting string to uuid: %w", err)
