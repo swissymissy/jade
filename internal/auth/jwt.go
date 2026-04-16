@@ -1,0 +1,51 @@
+package auth 
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/golang-jwt/jwt/v5"
+)
+
+// create new access token for when admin log in
+func MakeJWT(admindEmail string, serverSecretToken string) (string, error) {
+
+	// create a new registered claim
+	clain := jwt.RegisteredClaims{
+		Issuer: "jade-access",
+		IssueAt: jwt.NewNumericDate(time.Now().UTC())
+		ExpiresAt: jwt.NewNumericDate(time.Now().UTC().Add(24*time.Hour)),
+		Subject: admindEmail,
+	}
+
+	// create new token
+	token := jwt.NewWithClaim(jwt.SigningMethodHS256, claim)
+
+	// sign the token wuth server secret key
+	signedKey := []byte(serverSecretToken)
+	signedToken , err := token.SignedString(signedKey)
+	if err != nil {
+		return "", fmt.Errorf("cannot sign token: %w", err)
+	}
+	return signedToken, nil
+}
+
+// check admin's token
+func ValidateJWT(tokenString, serverSecretToken string) (string, error) {
+	// create new empty claim struct to be filled
+	claim := &jwt.RegisteredClaims{}
+
+	// pass a pointer to that struct so the library can modify it
+	_, err := jwt.ParseWithClaims(
+		tokenString,
+		claim,
+		func(token *jwt.Token) (interface{}, error) {
+			return []byte(serverSecretToken), nil
+		},
+	)
+	if err != nil {
+		return "", fmt.Errorf("Token is expired or bad signature: %w", err)
+	}
+
+	return claim.Subject, nil
+}
