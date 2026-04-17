@@ -12,7 +12,7 @@ import (
 // handler to let user search for products based on the url params
 func (apicfg *ApiConfig) HandlerSearchProduct(w http.ResponseWriter, r *http.Request) {
 	// param values from url
-	query := r.URL.Query().Get("q")
+	query := SanitizeString(r.URL.Query().Get("q"))
 	if query == "" {
 		ResponseWithError(w, http.StatusBadRequest, "Search can't be empty")
 		return

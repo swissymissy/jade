@@ -98,9 +98,24 @@ func main() {
 		Handler: mux,
 	}
 
-	// create handler
-	fileServer := http.FileServer(http.Dir("./frontend/static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	// static assets (css, js, images)
+	staticServer := http.FileServer(http.Dir("./frontend/static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", staticServer))
+
+	// HTML templates
+	const templateDir = "./frontend/templates"
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/index.html")
+	})
+	mux.HandleFunc("GET /products/{slug}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/product.html")
+	})
+	mux.HandleFunc("GET /admin/login", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/admin/login.html")
+	})
+	mux.HandleFunc("GET /admin/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/admin/dashboard.html")
+	})
 
 	// register handlers
 	// public routes
@@ -117,7 +132,7 @@ func main() {
 	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
 
-	// Auth
+	// auth
 	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
 	mux.HandleFunc("POST /api/admin/reset-password", apicfg.HandlerResetPassword)

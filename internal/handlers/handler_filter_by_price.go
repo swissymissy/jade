@@ -15,7 +15,7 @@ func (apicfg *ApiConfig) HandlerFilterByPrice(w http.ResponseWriter, r *http.Req
 	max := 999999.99
 
 	// price range from url
-	minStr := r.URL.Query().Get("min")
+	minStr := SanitizeString(r.URL.Query().Get("min"))
 	if minStr != "" {
 		parsed, err := strconv.ParseFloat(minStr, 64)
 		if err != nil {
@@ -25,7 +25,7 @@ func (apicfg *ApiConfig) HandlerFilterByPrice(w http.ResponseWriter, r *http.Req
 		min = parsed
 	}
 
-	maxStr := r.URL.Query().Get("max")
+	maxStr := SanitizeString(r.URL.Query().Get("max"))
 	if maxStr != "" {
 		parsed, err := strconv.ParseFloat(maxStr, 64)
 		if err != nil {
