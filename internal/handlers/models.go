@@ -59,3 +59,12 @@ type UploadedImage struct {
 	S3Key     string `json:"s3_key"`
 	CreatedAt string `json:"created_at"`
 }
+
+type ProductUpdateRequest struct {
+	Name        string  `json:"name"`
+	Type        string  `json:"type"`
+	Price       float64 `json:"price"`
+	Quantity    int64   `json:"quantity"`
+	Description string  `json:"description"`
+	IsAvailable int64   `json:"is_available"`
+}
