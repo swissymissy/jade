@@ -211,7 +211,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // === PRODUCTS ===
 const API_BASE = '/api';
-const S3_BASE = "{{.S3Base}}";
+const S3_BASE = '';
 const PLACEHOLDER_PRODUCTS = [
   { name: 'Lavender Mist', name_vi: 'Sương Lavender', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 180, tag: 'One of a kind', tag_vi: 'Độc bản', tag_color: 'gold', image: 'covers/jade-cover-1.jpg', slug: 'lavender-mist' },
   { name: 'Morning Dew', name_vi: 'Sương Sớm', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 165, image: 'covers/jade-cover.jpg', slug: 'morning-dew' },
@@ -239,7 +239,7 @@ function renderProduct(p) {
   const tagHTML = tagLabel ? `<span class="product-tag${tagClass}">${tagLabel}</span>` : '';
 
   return `
-    <a class="product-card" href="product.html?slug=${encodeURIComponent(p.slug)}">
+    <a class="product-card" href="/products/${encodeURIComponent(p.slug)}">
       <div class="product-image">${imageHTML}${tagHTML}</div>
       <div class="product-info">
         <span class="product-type">${safeType}</span>

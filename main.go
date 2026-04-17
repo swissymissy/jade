@@ -10,7 +10,6 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-	"html/template"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -71,12 +70,6 @@ func main() {
 		log.Fatal("S3_REGION environment variable is not set")
 	}
 
-	// get s# base url
-	s3Base := os.Getenv("S3_BASE_URL")
-	if s3Region == "" {
-		log.Fatal("S3_BASE_URL environment variable is not set")
-	}
-
 	awsCfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(s3Region))
 	if err != nil {
 		log.Fatal("Failed to load AWS config: %v", err)
@@ -109,31 +102,14 @@ func main() {
 	staticServer := http.FileServer(http.Dir("./frontend/static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", staticServer))
 
-	// parse template at startup
-	tmpl := template.Must(template.ParseFiles(
-		"./frontend/templates/index.html",
-		"./frontend/templates/product.html",
-	))
-	pageData := struct{
-		S3Base string
-	}{
-		S3Base: s3Base,
-	}
-	// home page 
-	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
-		if err := tmpl.ExecuteTemplate(w, "index.html", pageData); err != nil {
-			http.Error(w, "template error", http.StatusInternalServerError)
-		}
-	})
-	// product page
-	mux.HandleFunc("GET /products/{slug}", func(w http.ResponseWriter, r *http.Request) {
-		if err := tmpl.ExecuteTemplate(w, "product.html", pageData); err != nil {
-			http.Error(w, "template error", http.StatusInternalServerError)
-		}
-	})
-
-	//
+	// html template
 	const templateDir = "./frontend/templates"
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/index.html")
+	})
+	mux.HandleFunc("GET /products/{slug}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/product.html")
+	})
 	mux.HandleFunc("GET /admin/login", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, templateDir+"/admin/login.html")
 	})
@@ -145,6 +121,7 @@ func main() {
 	// public routes
 	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
 	mux.HandleFunc("GET /api/products/{id}", apicfg.HandlerGetOneProduct)
+	mux.HandleFunc("GET /api/products/slug/{slug}", apicfg.HandlerGetProductBySlug)
 	mux.HandleFunc("GET /api/products/search", apicfg.HandlerSearchProduct)
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 

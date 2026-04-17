@@ -287,7 +287,7 @@ function renderProductCard(p){
        </div>`;
   const tagHTML = tagLabel ? `<span class="product-tag${tagClass}">${tagLabel}</span>` : '';
   return `
-    <a class="product-card" href="product.html?slug=${encodeURIComponent(p.slug)}">
+    <a class="product-card" href="/products/${encodeURIComponent(p.slug)}">
       <div class="product-image">${imageHTML}${tagHTML}</div>
       <div class="product-info">
         <span class="product-type">${safeType}</span>
