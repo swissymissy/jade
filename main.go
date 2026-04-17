@@ -111,6 +111,8 @@ func main() {
 
 	// admind routes - protected
 	mux.HandleFunc("POST /api/admin/products", middleware.AuthRequired(apicfg.HandlerCreateProduct, apicfg.JWTSecret))
+	mux.HandleFunc("POST /api/admin/products/{id}/images", middleware.AuthRequired(apicfg.HandlerUploadImages, apicfg.JWTSecret))
+	mux.HandleFunc("POST /api/admin/products/{id}/video", middleware.AuthRequired(apicfg.HandlerUploadVideo, apicfg.JWTSecret))
 
 	// Auth
 	mux.HandleFunc("POST /api/auth/login", apicfg.AdminLogin)

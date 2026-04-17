@@ -319,3 +319,19 @@ func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (P
 	)
 	return i, err
 }
+
+const updateProductVideoURL = `-- name: UpdateProductVideoURL :exec
+UPDATE products
+SET video_url = ?, updated_at = datetime('now')
+WHERE id = ?
+`
+
+type UpdateProductVideoURLParams struct {
+	VideoUrl sql.NullString
+	ID       int64
+}
+
+func (q *Queries) UpdateProductVideoURL(ctx context.Context, arg UpdateProductVideoURLParams) error {
+	_, err := q.db.ExecContext(ctx, updateProductVideoURL, arg.VideoUrl, arg.ID)
+	return err
+}
