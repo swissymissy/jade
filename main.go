@@ -132,6 +132,7 @@ func main() {
 	mux.HandleFunc("DELETE /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerDeleteProduct, apicfg.JWTSecret))
 	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
+	mux.HandleFunc("POST /admin/reset", apicfg.HandlerReset)
 
 	// auth
 	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
