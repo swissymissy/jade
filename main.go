@@ -114,9 +114,12 @@ func main() {
 	mux.HandleFunc("POST /api/admin/products/{id}/images", middleware.AuthRequired(apicfg.HandlerUploadImages, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products/{id}/video", middleware.AuthRequired(apicfg.HandlerUploadVideo, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerDeleteProduct, apicfg.JWTSecret))
-	
+	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
+	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
+
 	// Auth
-	mux.HandleFunc("POST /api/auth/login", apicfg.AdminLogin)
+	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
+	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
 
 	// run server in background
 	go func() {

@@ -5,6 +5,34 @@ import (
 	"github.com/google/uuid"
 )
 
+// =====Admin===================
+type AdminLoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password'`
+}
+
+type AdminCreateRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
+
+type AdminResponse struct {
+	ID           string `json:"id"`
+	Email        string `json:"email"`
+	RecoveryCode string `json:"recovery_code"`
+	CreatedAt    string `json:"created_at"`
+	UpdatedAt    string `json:"updated_at"`
+}
+
+type LoginAdmin struct {
+	ID        uuid.UUID `json:"id"`
+	Email     string    `json:"email"`
+	CreatedAt string    `json:"created_at"`
+	UpdatedAt string    `json:"updated_at"`
+	Token     string    `json:"token"`
+}
+
+// ====Product================================
 type Product struct {
 	ID          int64          `json:"id"`
 	Name        string         `json:"name"`
@@ -17,19 +45,6 @@ type Product struct {
 	VideoUrl    sql.NullString `json:"video"`
 	CreatedAt   string         `json:"created_at"`
 	UpdatedAt   string         `json:"updated_at"`
-}
-
-type AdminLoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password'`
-}
-
-type LoginAdmin struct {
-	ID        uuid.UUID `json:"id"`
-	Email     string    `json:"email"`
-	CreatedAt string    `json:"created_at"`
-	UpdatedAt string    `json:"updated_at"`
-	Token     string    `json:"token"`
 }
 
 type ProductCreateRequest struct {

@@ -14,6 +14,7 @@ type Admin struct {
 	PasswordHash string
 	CreatedAt    string
 	UpdatedAt    string
+	RecoveryHash string
 }
 
 type Product struct {

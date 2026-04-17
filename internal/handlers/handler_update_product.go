@@ -75,7 +75,7 @@ func (apicfg *ApiConfig) HandlerUpdateProduct(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	// response 
+	// response
 	ResponseWithJSON(w, http.StatusOK, ProductResponse{
 		ID:          updated.ID,
 		Name:        updated.Name,

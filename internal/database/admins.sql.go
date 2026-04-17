@@ -12,7 +12,7 @@ import (
 const createAdmin = `-- name: CreateAdmin :one
 INSERT INTO admins (id, email, password_hash)
 VALUES (?, ?, ?)
-RETURNING id, email, password_hash, created_at, updated_at
+RETURNING id, email, password_hash, created_at, updated_at, recovery_hash
 `
 
 type CreateAdminParams struct {
@@ -30,12 +30,31 @@ func (q *Queries) CreateAdmin(ctx context.Context, arg CreateAdminParams) (Admin
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.RecoveryHash,
+	)
+	return i, err
+}
+
+const getAdmin = `-- name: GetAdmin :one
+SELECT id, email, password_hash, created_at, updated_at, recovery_hash FROM admins LIMIT 1
+`
+
+func (q *Queries) GetAdmin(ctx context.Context) (Admin, error) {
+	row := q.db.QueryRowContext(ctx, getAdmin)
+	var i Admin
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.RecoveryHash,
 	)
 	return i, err
 }
 
 const getAdminByEmail = `-- name: GetAdminByEmail :one
-SELECT id, email, password_hash, created_at, updated_at FROM admins WHERE email = ?
+SELECT id, email, password_hash, created_at, updated_at, recovery_hash FROM admins WHERE email = ?
 `
 
 func (q *Queries) GetAdminByEmail(ctx context.Context, email string) (Admin, error) {
@@ -47,12 +66,13 @@ func (q *Queries) GetAdminByEmail(ctx context.Context, email string) (Admin, err
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.RecoveryHash,
 	)
 	return i, err
 }
 
 const getAdminByID = `-- name: GetAdminByID :one
-SELECT id, email, password_hash, created_at, updated_at FROM admins WHERE ID = ?
+SELECT id, email, password_hash, created_at, updated_at, recovery_hash FROM admins WHERE ID = ?
 `
 
 func (q *Queries) GetAdminByID(ctx context.Context, id string) (Admin, error) {
@@ -64,6 +84,7 @@ func (q *Queries) GetAdminByID(ctx context.Context, id string) (Admin, error) {
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.RecoveryHash,
 	)
 	return i, err
 }

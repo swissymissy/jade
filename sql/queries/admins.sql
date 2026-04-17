@@ -18,3 +18,6 @@ WHERE id = ?;
 UPDATE admins 
 SET password_hash = ?, updated_at = datetime('now')
 WHERE id = ?;
+
+-- name: GetAdmin :one
+SELECT * FROM admins LIMIT 1;
