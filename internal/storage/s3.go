@@ -10,13 +10,13 @@ import (
 )
 
 // upload to s3 bucket
-func UploadToS3(ctx context.Contextclient *s3.Client, bucket, key, contentType string, body io.Reader) error {
+func UploadToS3(ctx context.Context, client *s3.Client, bucket, key, contentType string, body io.Reader) error {
 	// put object in bucket
 	_, err := client.PutObject(ctx, &s3.PutObjectInput{
-		Bucket: aws.String(bucket),
-		Key: aws.String(key),
-		Body: body,
-		contentType: aws.String(contentType),
+		Bucket:      aws.String(bucket),
+		Key:         aws.String(key),
+		Body:        body,
+		ContentType: aws.String(contentType),
 	})
 	if err != nil {
 		return fmt.Errorf("Failed to upload to S3: %w", err)
@@ -25,11 +25,11 @@ func UploadToS3(ctx context.Contextclient *s3.Client, bucket, key, contentType s
 }
 
 // delete from s3 bucket
-func DeleteFromS3(ctx context.Context, client *s3.Client, bucket, key string ) error {
+func DeleteFromS3(ctx context.Context, client *s3.Client, bucket, key string) error {
 	// delete object from bucket
 	_, err := client.DeleteObject(ctx, &s3.DeleteObjectInput{
 		Bucket: aws.String(bucket),
-		Key: aws.String(key),
+		Key:    aws.String(key),
 	})
 	if err != nil {
 		return fmt.Errorf("failed to delete from S3: %w", err)

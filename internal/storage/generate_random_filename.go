@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-// generate randome filename 
+// generate randome filename
 func RandomFilename(extension string) (string, error) {
 	randomSlice := make([]byte, 32)
 	_, err := rand.Read(randomSlice)
@@ -16,4 +16,3 @@ func RandomFilename(extension string) (string, error) {
 	randomName := base64.RawURLEncoding.EncodeToString(randomSlice) + extension
 	return randomName, nil
 }
-

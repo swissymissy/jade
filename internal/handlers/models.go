@@ -52,3 +52,10 @@ type ProductResponse struct {
 	CreatedAt   string         `json:"created_at"`
 	UpdatedAt   string         `json:"updated_at"`
 }
+
+type UploadedImage struct {
+	ID        int64  `json:"id"`
+	ProductID int64  `json:"product_id"`
+	S3Key     string `json:"s3_key"`
+	CreatedAt string `json:"created_at"`
+}

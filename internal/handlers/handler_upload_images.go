@@ -1,16 +1,15 @@
-package handlers 
+package handlers
 
 import (
-	"net/http"
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
-	"strconv"
-	"errors"
-	"database/sql"
+	"net/http"
 	"path/filepath"
+	"strconv"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/swissymissy/jade/internal/database"
 	"github.com/swissymissy/jade/internal/storage"
 )
@@ -20,7 +19,7 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 
 	// get product ID from URL
 	itemIDStr := r.PathValue("id")
-	itemID, err := strconv.Atoi(itemIDStr)
+	itemID, err := strconv.ParseInt(itemIDStr, 10, 64)
 	if err != nil {
 		log.Printf("Error converting ID string to int64: %s\n", err)
 		ResponseWithError(w, http.StatusBadRequest, "Invalid ID")
@@ -39,7 +38,7 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// check images count 
+	// check images count
 	count, err := apicfg.DB.CountImagesByProductID(r.Context(), itemID)
 	if err != nil {
 		log.Printf("Error counting images: %s", err)
@@ -52,7 +51,8 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// read file from form
+	// handle uploading image
+	// 1. read file from form
 	const maxSize = 10 << 20 //10MB
 	r.Body = http.MaxBytesReader(w, r.Body, maxSize)
 
@@ -64,7 +64,7 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// retrieve the uploaded image from request
+	// 2. retrieve the uploaded image from request
 	file, header, err := r.FormFile("image")
 	if err != nil {
 		log.Printf("Error reading file: %s", err)
@@ -73,7 +73,7 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 	}
 	defer file.Close() // close file to prevent data leak
 
-	// validate file type
+	// 3. validate file type
 	extension := strings.ToLower(filepath.Ext(header.Filename))
 	allowedTypes := map[string]string{
 		".jpg":  "image/jpeg",
@@ -81,14 +81,14 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 		".png":  "image/png",
 		".webp": "image/webp",
 	}
-
+	// 4. check if the extension is valid type
 	contentType, ok := allowedTypes[extension]
 	if !ok {
 		ResponseWithError(w, http.StatusBadRequest, "Only jpg, png, and webp images are allowed")
 		return
 	}
 
-	// create unique filename
+	// 5. create unique filename
 	filename, err := storage.RandomFilename(extension)
 	if err != nil {
 		log.Printf("Error generating filename: %s", err)
@@ -96,9 +96,41 @@ func (apicfg *ApiConfig) HandlerUploadImages(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// s3 key
+	// 6. create s3 key
 	s3Key := fmt.Sprintf("products/%d/%s", itemID, filename)
 
-	// upload to s3
-	
+	// 7. upload to s3
+	err = storage.UploadToS3(r.Context(), apicfg.S3Client, apicfg.S3Bucket, s3Key, contentType, file)
+	if err != nil {
+		log.Printf("Error uploading to S3: %s", err)
+		ResponseWithError(w, http.StatusInternalServerError, "Failed to upload image")
+		return
+	}
+
+	// set cover photo
+	cover := int64(0)
+	if count == 0 {
+		cover = 1 // first image is automatically the cover
+	}
+
+	// save to database
+	image, err := apicfg.DB.CreateProductImage(r.Context(), database.CreateProductImageParams{
+		ProductID: itemID,
+		S3Key:     s3Key,
+		Cover:     cover,
+	})
+	if err != nil {
+		log.Printf("Error saving image to database: %s", err)
+		ResponseWithError(w, http.StatusInternalServerError, "Failed to save image record")
+		return
+	}
+
+	log.Printf("Image uploaded for product %d: %s", itemID, s3Key)
+	ResponseWithJSON(w, http.StatusCreated, UploadedImage{
+		ID:        image.ID,
+		ProductID: image.ProductID,
+		S3Key:     image.S3Key,
+		CreatedAt: image.CreatedAt,
+	})
+
 }
