@@ -21,7 +21,7 @@ func (apicfg *ApiConfig) HandlerGetAllProducts(w http.ResponseWriter, r *http.Re
 		}
 		limit = parsed
 	}
-	productList := make([]Product, 0, limit)
+	productList := make([]ProductListing, 0, limit)
 
 	// get products from database
 	list, err := apicfg.DB.GetAllProducts(r.Context(), int64(limit))

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"log"
 )
 
 // get one single product based on product's ID
@@ -36,7 +37,7 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 	}
 
 	// fetch product images
-	images, err := apicfg.DB.GetImagesByProductID(r.Context(), productID)
+	images, err := apicfg.DB.GetImagesByProductID(r.Context(), int64(productID))
 	if err != nil {
 		log.Printf("Error fetching images: %s", err)
 		// no return — product still works without images
