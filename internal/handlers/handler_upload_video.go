@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/swissymissy/jade/internal/storage"
 	"github.com/swissymissy/jade/internal/database"
+	"github.com/swissymissy/jade/internal/storage"
 )
 
 func (apicfg *ApiConfig) HandlerUploadVideo(w http.ResponseWriter, r *http.Request) {

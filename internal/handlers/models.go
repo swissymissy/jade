@@ -47,6 +47,32 @@ type Product struct {
 	UpdatedAt   string         `json:"updated_at"`
 }
 
+type ProductDetail struct {
+	ID          int64          `json:"id"`
+	Name        string         `json:"name"`
+	Slug        string         `json:"slug"`
+	Type        string         `json:"type"`
+	Price       float64        `json:"price"`
+	Quantity    int64          `json:"quantity"`
+	Description sql.NullString `json:"description"`
+	IsAvailable int64          `json:"is_available"`
+	VideoUrl    sql.NullString `json:"video_url"`
+	CreatedAt   string         `json:"created_at"`
+	UpdatedAt   string         `json:"updated_at"`
+	Images      []ProductImage `json:"images"`
+}
+
+type ProductListing struct {
+	ID          int64         `json:"id"`
+	Name        string        `json:"name"`
+	Slug        string        `json:"slug"`
+	Type        string        `json:"type"`
+	Price       float64       `json:"price"`
+	Quantity    int64         `json:"quantity"`
+	IsAvailable int64         `json:"is_available"`
+	CoverImage  *ProductImage `json:"cover_image"`
+}
+
 type ProductCreateRequest struct {
 	Name        string  `json:"name"`
 	Type        string  `json:"type"`
@@ -62,6 +88,14 @@ type UploadedImage struct {
 	CreatedAt string `json:"created_at"`
 }
 
+type ProductImage struct {
+	ID        int64  `json:"id"`
+	ProductID int64  `json:"product_id"`
+	S3Key     string `json:"s3_key"`
+	Cover     int64  `json:"cover"`
+	CreatedAt string `json:"created_at"`
+}
+
 type ProductUpdateRequest struct {
 	Name        string  `json:"name"`
 	Type        string  `json:"type"`
@@ -71,7 +105,7 @@ type ProductUpdateRequest struct {
 	IsAvailable int64   `json:"is_available"`
 }
 
-//====Password Reset=====================
+// ====Password Reset=====================
 type PasswordResetRequest struct {
 	RecoveryCode string `json:"recovery_code"`
 	NewPassword  string `json:"new_password"`

@@ -1,15 +1,15 @@
-package handlers 
+package handlers
 
 import (
-	"net/http"
 	"log"
+	"net/http"
 
 	"github.com/swissymissy/jade/internal/auth"
 	"github.com/swissymissy/jade/internal/database"
 )
 
 func (apicfg *ApiConfig) HandlerResetPassword(w http.ResponseWriter, r *http.Request) {
-	// decode request 
+	// decode request
 	var req PasswordResetRequest
 	err := DecodeRequest(r, &req)
 	if err != nil {

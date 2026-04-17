@@ -55,6 +55,25 @@ func (q *Queries) DeleteImage(ctx context.Context, id int64) error {
 	return err
 }
 
+const getCoverImageByProductID = `-- name: GetCoverImageByProductID :one
+SELECT id, product_id, s3_key, cover, created_at FROM product_images
+WHERE product_id = ? AND cover = 1
+LIMIT 1
+`
+
+func (q *Queries) GetCoverImageByProductID(ctx context.Context, productID int64) (ProductImage, error) {
+	row := q.db.QueryRowContext(ctx, getCoverImageByProductID, productID)
+	var i ProductImage
+	err := row.Scan(
+		&i.ID,
+		&i.ProductID,
+		&i.S3Key,
+		&i.Cover,
+		&i.CreatedAt,
+	)
+	return i, err
+}
+
 const getImageByID = `-- name: GetImageByID :one
 SELECT id, product_id, s3_key, cover, created_at FROM product_images WHERE id = ?
 `

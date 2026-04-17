@@ -106,7 +106,7 @@ func main() {
 	// public routes
 	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
 	mux.HandleFunc("GET /api/products/{id}", apicfg.HandlerGetOneProduct)
-	mux.HandleFunc("GET /api/productst/search", apicfg.HandlerSearchProduct)
+	mux.HandleFunc("GET /api/products/search", apicfg.HandlerSearchProduct)
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
 	// admind routes - protected

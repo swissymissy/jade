@@ -17,3 +17,8 @@ DELETE FROM product_images WHERE id = ?;
 
 -- name: GetImageByID :one
 SELECT * FROM product_images WHERE id = ?;
+
+-- name: GetCoverImageByProductID :one
+SELECT * FROM product_images
+WHERE product_id = ? AND cover = 1
+LIMIT 1;
