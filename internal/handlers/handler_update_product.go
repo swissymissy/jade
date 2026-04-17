@@ -65,7 +65,7 @@ func (apicfg *ApiConfig) HandlerUpdateProduct(w http.ResponseWriter, r *http.Req
 		Type:        req.Type,
 		Price:       req.Price,
 		Quantity:    req.Quantity,
-		Description: toNullString(req.Description),
+		Description: ToNullString(req.Description),
 		IsAvailable: req.IsAvailable,
 		ID:          itemID,
 	})
@@ -76,7 +76,7 @@ func (apicfg *ApiConfig) HandlerUpdateProduct(w http.ResponseWriter, r *http.Req
 	}
 
 	// response
-	ResponseWithJSON(w, http.StatusOK, ProductResponse{
+	ResponseWithJSON(w, http.StatusOK, Product{
 		ID:          updated.ID,
 		Name:        updated.Name,
 		Slug:        updated.Slug,

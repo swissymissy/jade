@@ -57,7 +57,7 @@ func (apicfg *ApiConfig) HandlerCreateProduct(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	ResponseWithJSON(w, http.StatusCreated, ProductResponse{
+	ResponseWithJSON(w, http.StatusCreated, Product{
 		ID:          item.ID,
 		Name:        item.Name,
 		Slug:        item.Slug,

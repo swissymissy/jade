@@ -120,6 +120,7 @@ func main() {
 	// Auth
 	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
+	mux.HandleFunc("POST /api/admin/reset-password", apicfg.HandlerResetPassword)
 
 	// run server in background
 	go func() {

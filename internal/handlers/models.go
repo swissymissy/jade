@@ -55,19 +55,6 @@ type ProductCreateRequest struct {
 	Description string  `json:"description"`
 }
 
-type ProductResponse struct {
-	ID          int64          `json:"id"`
-	Name        string         `json:"name"`
-	Slug        string         `json:"slug"`
-	Type        string         `json:"type"`
-	Price       float64        `json:"price"`
-	Quantity    int64          `json:"quantity"`
-	Description sql.NullString `json:"description"`
-	VideoUrl    sql.NullString `json:"video_url"`
-	CreatedAt   string         `json:"created_at"`
-	UpdatedAt   string         `json:"updated_at"`
-}
-
 type UploadedImage struct {
 	ID        int64  `json:"id"`
 	ProductID int64  `json:"product_id"`
@@ -82,4 +69,15 @@ type ProductUpdateRequest struct {
 	Quantity    int64   `json:"quantity"`
 	Description string  `json:"description"`
 	IsAvailable int64   `json:"is_available"`
+}
+
+//====Password Reset=====================
+type PasswordResetRequest struct {
+	RecoveryCode string `json:"recovery_code"`
+	NewPassword  string `json:"new_password"`
+}
+
+type PasswordResetResponse struct {
+	Message      string `json:"message"`
+	RecoveryCode string `json:"recovery_code"`
 }

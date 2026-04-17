@@ -3,7 +3,7 @@ INSERT INTO product_images (product_id, s3_key, cover)
 VALUES (?, ? , ?)
 RETURNING *;
 
--- name: GetImaginesByProductID :many
+-- name: GetImagesByProductID :many
 SELECT * FROM product_images 
 WHERE product_id = ?
 ORDER BY created_at ASC;

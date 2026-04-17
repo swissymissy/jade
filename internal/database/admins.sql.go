@@ -10,8 +10,8 @@ import (
 )
 
 const createAdmin = `-- name: CreateAdmin :one
-INSERT INTO admins (id, email, password_hash)
-VALUES (?, ?, ?)
+INSERT INTO admins (id, email, password_hash, recovery_hash)
+VALUES (?, ?, ?, ?)
 RETURNING id, email, password_hash, created_at, updated_at, recovery_hash
 `
 
@@ -19,10 +19,16 @@ type CreateAdminParams struct {
 	ID           string
 	Email        string
 	PasswordHash string
+	RecoveryHash string
 }
 
 func (q *Queries) CreateAdmin(ctx context.Context, arg CreateAdminParams) (Admin, error) {
-	row := q.db.QueryRowContext(ctx, createAdmin, arg.ID, arg.Email, arg.PasswordHash)
+	row := q.db.QueryRowContext(ctx, createAdmin,
+		arg.ID,
+		arg.Email,
+		arg.PasswordHash,
+		arg.RecoveryHash,
+	)
 	var i Admin
 	err := row.Scan(
 		&i.ID,
@@ -118,5 +124,21 @@ type UpdateAdminPasswordParams struct {
 
 func (q *Queries) UpdateAdminPassword(ctx context.Context, arg UpdateAdminPasswordParams) error {
 	_, err := q.db.ExecContext(ctx, updateAdminPassword, arg.PasswordHash, arg.ID)
+	return err
+}
+
+const updateAdminRecoveryHash = `-- name: UpdateAdminRecoveryHash :exec
+UPDATE admins
+SET recovery_hash = ?, updated_at = datetime('now')
+WHERE id = ?
+`
+
+type UpdateAdminRecoveryHashParams struct {
+	RecoveryHash string
+	ID           string
+}
+
+func (q *Queries) UpdateAdminRecoveryHash(ctx context.Context, arg UpdateAdminRecoveryHashParams) error {
+	_, err := q.db.ExecContext(ctx, updateAdminRecoveryHash, arg.RecoveryHash, arg.ID)
 	return err
 }

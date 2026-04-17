@@ -72,14 +72,14 @@ func (q *Queries) GetImageByID(ctx context.Context, id int64) (ProductImage, err
 	return i, err
 }
 
-const getImaginesByProductID = `-- name: GetImaginesByProductID :many
+const getImagesByProductID = `-- name: GetImagesByProductID :many
 SELECT id, product_id, s3_key, cover, created_at FROM product_images 
 WHERE product_id = ?
 ORDER BY created_at ASC
 `
 
-func (q *Queries) GetImaginesByProductID(ctx context.Context, productID int64) ([]ProductImage, error) {
-	rows, err := q.db.QueryContext(ctx, getImaginesByProductID, productID)
+func (q *Queries) GetImagesByProductID(ctx context.Context, productID int64) ([]ProductImage, error) {
+	rows, err := q.db.QueryContext(ctx, getImagesByProductID, productID)
 	if err != nil {
 		return nil, err
 	}
