@@ -10,6 +10,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"html/template"
 
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -70,6 +71,12 @@ func main() {
 		log.Fatal("S3_REGION environment variable is not set")
 	}
 
+	// get s# base url
+	s3Base := os.Getenv("S3_BASE_URL")
+	if s3Region == "" {
+		log.Fatal("S3_BASE_URL environment variable is not set")
+	}
+
 	awsCfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(s3Region))
 	if err != nil {
 		log.Fatal("Failed to load AWS config: %v", err)
@@ -102,14 +109,31 @@ func main() {
 	staticServer := http.FileServer(http.Dir("./frontend/static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", staticServer))
 
-	// HTML templates
-	const templateDir = "./frontend/templates"
+	// parse template at startup
+	tmpl := template.Must(template.ParseFiles(
+		"./frontend/templates/index.html",
+		"./frontend/templates/product.html",
+	))
+	pageData := struct{
+		S3Base string
+	}{
+		S3Base: s3Base,
+	}
+	// home page 
 	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, templateDir+"/index.html")
+		if err := tmpl.ExecuteTemplate(w, "index.html", pageData); err != nil {
+			http.Error(w, "template error", http.StatusInternalServerError)
+		}
 	})
+	// product page
 	mux.HandleFunc("GET /products/{slug}", func(w http.ResponseWriter, r *http.Request) {
-		http.ServeFile(w, r, templateDir+"/product.html")
+		if err := tmpl.ExecuteTemplate(w, "product.html", pageData); err != nil {
+			http.Error(w, "template error", http.StatusInternalServerError)
+		}
 	})
+
+	//
+	const templateDir = "./frontend/templates"
 	mux.HandleFunc("GET /admin/login", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, templateDir+"/admin/login.html")
 	})
@@ -139,7 +163,7 @@ func main() {
 
 	// run server in background
 	go func() {
-		fmt.Printf("Serving on: http://localhost:%s/static/\n", port)
+		fmt.Printf("Serving on: http://localhost:%s/\n", port)
 		if err := jadeServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("HTTP server error: %s\n", err)
 		}
