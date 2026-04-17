@@ -21,7 +21,7 @@ func (apicfg *ApiConfig) HandlerGetAllProducts(w http.ResponseWriter, r *http.Re
 		}
 		limit = parsed
 	}
-	productList := make([]Product, 0, limit)
+	productList := make([]ProductListing, 0, limit)
 
 	// get products from database
 	list, err := apicfg.DB.GetAllProducts(r.Context(), int64(limit))
@@ -33,18 +33,30 @@ func (apicfg *ApiConfig) HandlerGetAllProducts(w http.ResponseWriter, r *http.Re
 
 	// write to response format
 	for _, p := range list {
-		productList = append(productList, Product{
+
+		// if a product has no image, it serializes as "cover_image: null"
+		// in JSON instead of an empty object. Clean for frontend to handle
+		var coverImage *ProductImage
+		cover, err := apicfg.DB.GetCoverImageByProductID(r.Context(), p.ID)
+		if err == nil {
+			coverImage = &ProductImage{
+				ID:        cover.ID,
+				ProductID: cover.ProductID,
+				S3Key:     cover.S3Key,
+				Cover:     cover.Cover,
+				CreatedAt: cover.CreatedAt,
+			}
+		}
+
+		productList = append(productList, ProductListing{
 			ID:          p.ID,
 			Name:        p.Name,
 			Slug:        p.Slug,
 			Type:        p.Type,
 			Price:       p.Price,
 			Quantity:    p.Quantity,
-			Description: p.Description,
 			IsAvailable: p.IsAvailable,
-			VideoUrl:    p.VideoUrl,
-			CreatedAt:   p.CreatedAt,
-			UpdatedAt:   p.UpdatedAt,
+			CoverImage:  coverImage,
 		})
 	}
 

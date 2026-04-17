@@ -51,5 +51,10 @@ SET name = ?,
 WHERE id = ?
 RETURNING *;
 
+-- name: UpdateProductVideoURL :exec
+UPDATE products
+SET video_url = ?, updated_at = datetime('now')
+WHERE id = ?;
+
 -- name: DeleteProduct :exec
 DELETE FROM products WHERE id = ?;

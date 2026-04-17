@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"log"
 )
 
 // get one single product based on product's ID
@@ -35,7 +36,25 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	ResponseWithJSON(w, http.StatusOK, Product{
+	// fetch product images
+	images, err := apicfg.DB.GetImagesByProductID(r.Context(), int64(productID))
+	if err != nil {
+		log.Printf("Error fetching images: %s", err)
+		// no return — product still works without images
+	}
+
+	imageList := make([]ProductImage, 0, len(images))
+	for _, img := range images {
+		imageList = append(imageList, ProductImage{
+			ID:        img.ID,
+			ProductID: img.ProductID,
+			S3Key:     img.S3Key,
+			Cover:     img.Cover,
+			CreatedAt: img.CreatedAt,
+		})
+	}
+
+	ResponseWithJSON(w, http.StatusOK, ProductDetail{
 		ID:          product.ID,
 		Name:        product.Name,
 		Slug:        product.Slug,
@@ -47,5 +66,6 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		VideoUrl:    product.VideoUrl,
 		CreatedAt:   product.CreatedAt,
 		UpdatedAt:   product.UpdatedAt,
+		Images:      imageList,
 	})
 }

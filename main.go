@@ -106,14 +106,21 @@ func main() {
 	// public routes
 	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
 	mux.HandleFunc("GET /api/products/{id}", apicfg.HandlerGetOneProduct)
-	mux.HandleFunc("GET /api/productst/search", apicfg.HandlerSearchProduct)
+	mux.HandleFunc("GET /api/products/search", apicfg.HandlerSearchProduct)
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
 	// admind routes - protected
-	
+	mux.HandleFunc("POST /api/admin/products", middleware.AuthRequired(apicfg.HandlerCreateProduct, apicfg.JWTSecret))
+	mux.HandleFunc("POST /api/admin/products/{id}/images", middleware.AuthRequired(apicfg.HandlerUploadImages, apicfg.JWTSecret))
+	mux.HandleFunc("POST /api/admin/products/{id}/video", middleware.AuthRequired(apicfg.HandlerUploadVideo, apicfg.JWTSecret))
+	mux.HandleFunc("DELETE /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerDeleteProduct, apicfg.JWTSecret))
+	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
+	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
 
 	// Auth
+	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
+	mux.HandleFunc("POST /api/admin/reset-password", apicfg.HandlerResetPassword)
 
 	// run server in background
 	go func() {

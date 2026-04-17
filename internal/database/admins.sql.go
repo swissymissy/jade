@@ -10,19 +10,25 @@ import (
 )
 
 const createAdmin = `-- name: CreateAdmin :one
-INSERT INTO admins (id, email, password_hash)
-VALUES (?, ?, ?)
-RETURNING id, email, password_hash, created_at, updated_at
+INSERT INTO admins (id, email, password_hash, recovery_hash)
+VALUES (?, ?, ?, ?)
+RETURNING id, email, password_hash, created_at, updated_at, recovery_hash
 `
 
 type CreateAdminParams struct {
 	ID           string
 	Email        string
 	PasswordHash string
+	RecoveryHash string
 }
 
 func (q *Queries) CreateAdmin(ctx context.Context, arg CreateAdminParams) (Admin, error) {
-	row := q.db.QueryRowContext(ctx, createAdmin, arg.ID, arg.Email, arg.PasswordHash)
+	row := q.db.QueryRowContext(ctx, createAdmin,
+		arg.ID,
+		arg.Email,
+		arg.PasswordHash,
+		arg.RecoveryHash,
+	)
 	var i Admin
 	err := row.Scan(
 		&i.ID,
@@ -30,12 +36,31 @@ func (q *Queries) CreateAdmin(ctx context.Context, arg CreateAdminParams) (Admin
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.RecoveryHash,
+	)
+	return i, err
+}
+
+const getAdmin = `-- name: GetAdmin :one
+SELECT id, email, password_hash, created_at, updated_at, recovery_hash FROM admins LIMIT 1
+`
+
+func (q *Queries) GetAdmin(ctx context.Context) (Admin, error) {
+	row := q.db.QueryRowContext(ctx, getAdmin)
+	var i Admin
+	err := row.Scan(
+		&i.ID,
+		&i.Email,
+		&i.PasswordHash,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.RecoveryHash,
 	)
 	return i, err
 }
 
 const getAdminByEmail = `-- name: GetAdminByEmail :one
-SELECT id, email, password_hash, created_at, updated_at FROM admins WHERE email = ?
+SELECT id, email, password_hash, created_at, updated_at, recovery_hash FROM admins WHERE email = ?
 `
 
 func (q *Queries) GetAdminByEmail(ctx context.Context, email string) (Admin, error) {
@@ -47,12 +72,13 @@ func (q *Queries) GetAdminByEmail(ctx context.Context, email string) (Admin, err
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.RecoveryHash,
 	)
 	return i, err
 }
 
 const getAdminByID = `-- name: GetAdminByID :one
-SELECT id, email, password_hash, created_at, updated_at FROM admins WHERE ID = ?
+SELECT id, email, password_hash, created_at, updated_at, recovery_hash FROM admins WHERE ID = ?
 `
 
 func (q *Queries) GetAdminByID(ctx context.Context, id string) (Admin, error) {
@@ -64,6 +90,7 @@ func (q *Queries) GetAdminByID(ctx context.Context, id string) (Admin, error) {
 		&i.PasswordHash,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.RecoveryHash,
 	)
 	return i, err
 }
@@ -97,5 +124,21 @@ type UpdateAdminPasswordParams struct {
 
 func (q *Queries) UpdateAdminPassword(ctx context.Context, arg UpdateAdminPasswordParams) error {
 	_, err := q.db.ExecContext(ctx, updateAdminPassword, arg.PasswordHash, arg.ID)
+	return err
+}
+
+const updateAdminRecoveryHash = `-- name: UpdateAdminRecoveryHash :exec
+UPDATE admins
+SET recovery_hash = ?, updated_at = datetime('now')
+WHERE id = ?
+`
+
+type UpdateAdminRecoveryHashParams struct {
+	RecoveryHash string
+	ID           string
+}
+
+func (q *Queries) UpdateAdminRecoveryHash(ctx context.Context, arg UpdateAdminRecoveryHashParams) error {
+	_, err := q.db.ExecContext(ctx, updateAdminRecoveryHash, arg.RecoveryHash, arg.ID)
 	return err
 }
