@@ -98,14 +98,30 @@ func main() {
 		Handler: mux,
 	}
 
-	// create handler
-	fileServer := http.FileServer(http.Dir("./frontend/static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	// static assets (css, js, images)
+	staticServer := http.FileServer(http.Dir("./frontend/static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", staticServer))
+
+	// html template
+	const templateDir = "./frontend/templates"
+	mux.HandleFunc("GET /{$}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/index.html")
+	})
+	mux.HandleFunc("GET /products/{slug}", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/product.html")
+	})
+	mux.HandleFunc("GET /admin/login", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/admin/login.html")
+	})
+	mux.HandleFunc("GET /admin/dashboard", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, templateDir+"/admin/dashboard.html")
+	})
 
 	// register handlers
 	// public routes
 	mux.HandleFunc("GET /api/products", apicfg.HandlerGetAllProducts)
 	mux.HandleFunc("GET /api/products/{id}", apicfg.HandlerGetOneProduct)
+	mux.HandleFunc("GET /api/products/slug/{slug}", apicfg.HandlerGetProductBySlug)
 	mux.HandleFunc("GET /api/products/search", apicfg.HandlerSearchProduct)
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
@@ -117,14 +133,14 @@ func main() {
 	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
 
-	// Auth
+	// auth
 	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
 	mux.HandleFunc("POST /api/admin/reset-password", apicfg.HandlerResetPassword)
 
 	// run server in background
 	go func() {
-		fmt.Printf("Serving on: http://localhost:%s/static/\n", port)
+		fmt.Printf("Serving on: http://localhost:%s/\n", port)
 		if err := jadeServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("HTTP server error: %s\n", err)
 		}

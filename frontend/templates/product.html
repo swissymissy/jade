@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lavender Mist — Jade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body data-logo-style="dot" data-card-style="minimal">
+
+<!-- NAV -->
+<nav class="nav scrolled" id="nav">
+  <div class="nav-left">
+    <a href="/" class="nav-logo" id="navLogo"><span class="logo-text">Ja<span class="dot">·</span>de</span></a>
+  </div>
+  <div class="nav-center">
+    <ul class="nav-links">
+      <li><a href="/#collection" data-en="Collection" data-vi="Bộ sưu tập">Collection</a></li>
+      <li><a href="/#lookbook" data-en="Lookbook" data-vi="Khoảnh khắc">Lookbook</a></li>
+      <li><a href="/#about" data-en="About" data-vi="Về chúng tôi">About</a></li>
+      <li><a href="/#contact" data-en="Contact" data-vi="Liên hệ">Contact</a></li>
+    </ul>
+  </div>
+  <div class="nav-right">
+    <button class="lang-toggle" onclick="toggleLang()" id="langBtn">VI</button>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- PRODUCT DETAIL -->
+<main class="pd">
+
+  <nav class="breadcrumb">
+    <a href="/" data-en="Home" data-vi="Trang chủ">Home</a>
+    <span class="sep">/</span>
+    <a href="/#collection" data-en="Collection" data-vi="Bộ sưu tập">Collection</a>
+    <span class="sep">/</span>
+    <span class="current" id="crumbName">Lavender Mist</span>
+  </nav>
+
+  <div class="pd-grid">
+    <!-- GALLERY -->
+    <div class="pd-gallery">
+      <div class="pd-main-img" id="pdMain">
+        <img src="/static/covers/jade_cover_1.jpg" alt="Lavender Mist jade bangle" id="pdMainImg">
+      </div>
+      <div class="pd-thumbs" id="pdThumbs">
+        <div class="pd-thumb active" data-src="/static/covers/jade_cover_1.jpg"><img src="/static/covers/jade_cover_1.jpg" alt=""></div>
+        <div class="pd-thumb" data-src="/static/covers/jade_cover.jpg"><img src="/static/covers/jade_cover.jpg" alt=""></div>
+        <div class="pd-thumb" data-src="/static/covers/cover_3.jpg"><img src="/static/covers/cover_3.jpg" alt=""></div>
+        <div class="pd-thumb" data-placeholder="1">
+          <div class="product-image-placeholder" style="inset:0;position:absolute;">
+            <div class="stripes"></div>
+            <span class="ph-label" style="font-size:8px;">More</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="pd-info">
+      <span class="pd-type" data-en="Lavender Jade Bangle" data-vi="Vòng ngọc Lavender">Lavender Jade Bangle</span>
+      <h1 class="pd-name" id="pdName" data-en-html="Lavender <em>Mist</em>" data-vi-html="Sương <em>Lavender</em>">Lavender <em>Mist</em></h1>
+
+      <p class="pd-price">
+        <span class="currency">$</span>180<span style="font-weight:400">.00</span>
+      </p>
+
+      <div class="pd-divider"></div>
+
+      <p class="pd-desc" data-en="A soft lavender-white jade bangle with gentle green veining. Carved from a single piece of natural jadeite, polished to a quiet sheen. Each bangle is unique — the pattern you see is the one you'll wear." data-vi="Một chiếc vòng ngọc bích màu lavender-trắng dịu nhẹ với những vệt xanh mảnh. Được tạc từ một khối ngọc bích tự nhiên, đánh bóng đến độ sáng nhẹ. Mỗi chiếc vòng đều là độc bản — hoa văn bạn thấy là hoa văn bạn sẽ đeo.">A soft lavender-white jade bangle with gentle green veining. Carved from a single piece of natural jadeite, polished to a quiet sheen. Each bangle is unique — the pattern you see is the one you'll wear.</p>
+
+      <!-- Attributes -->
+      <div class="pd-attrs">
+        <div class="pd-attr">
+          <span class="pd-attr-label" data-en="Stone" data-vi="Đá">Stone</span>
+          <span class="pd-attr-value" data-en="Natural Jadeite" data-vi="Ngọc bích tự nhiên">Natural Jadeite</span>
+        </div>
+        <div class="pd-attr">
+          <span class="pd-attr-label" data-en="Type" data-vi="Loại">Type</span>
+          <span class="pd-attr-value" data-en="Lavender / Type A" data-vi="Lavender / Loại A">Lavender / Type A</span>
+        </div>
+        <div class="pd-attr">
+          <span class="pd-attr-label" data-en="Finish" data-vi="Hoàn thiện">Finish</span>
+          <span class="pd-attr-value" data-en="Hand-polished" data-vi="Đánh bóng thủ công">Hand-polished</span>
+        </div>
+      </div>
+
+      <!-- Fit info -->
+      <div class="pd-fit">
+        <div class="pd-fit-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>
+          <div>
+            <span class="pd-fit-label" data-en="Inner diameter" data-vi="Đường kính trong">Inner diameter</span>
+            <span class="pd-fit-value" data-en="50 – 51 mm" data-vi="50 – 51 mm">50 – 51 mm</span>
+          </div>
+        </div>
+        <p class="pd-fit-note" data-en="Comfortable fit for wrists 50 – 52 mm." data-vi="Vừa vặn cho cổ tay 50 – 52 mm.">Comfortable fit for wrists 50 – 52 mm.</p>
+      </div>
+
+      <!-- Availability + CTA -->
+      <div class="pd-qty-row">
+        <div class="pd-stock" id="pdStock">
+          <span class="pd-stock-dot" aria-hidden="true"></span>
+          <span class="pd-stock-text">
+            <span class="pd-stock-label" data-en="Availability" data-vi="Tình trạng">Availability</span>
+            <span class="pd-stock-value" id="pdStockValue" data-en="1 in stock" data-vi="Còn 1 chiếc">1 in stock</span>
+          </span>
+        </div>
+        <div class="pd-btn-row" style="flex:1">
+          <!-- <a href="#contact" class="btn btn-dark pd-cta">
+            <span data-en="Reserve this piece" data-vi="Giữ chỗ chiếc này">Reserve this piece</span>
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a> -->
+          <a href="https://www.facebook.com/profile.php?id=61573362579511&notif_id=1775878052660729&notif_t=follower_invite&ref=notif" target="_blank" rel="noopener" class="btn btn-outline-dark pd-cta">
+            <span data-en="Ask on Messenger" data-vi="Hỏi qua Messenger">Ask on Messenger</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Meta -->
+      <div class="pd-meta">
+        <!-- FREE SHIPPING
+        <div class="pd-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7h18l-2 11H5L3 7z"/><path d="M8 7V5a4 4 0 018 0v2"/></svg>
+          <span class="pd-meta-label" data-en="Free shipping" data-vi="Miễn phí ship">Free shipping</span>
+          <span class="pd-meta-text" data-en="On orders over $150" data-vi="Đơn từ $150">On orders over $150</span>
+        </div>
+        -->
+        <div class="pd-meta-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l9 4v6c0 5-4 9-9 10-5-1-9-5-9-10V6l9-4z"/><path d="M9 12l2 2 4-4"/></svg>
+          <span class="pd-meta-label" data-en="Authenticity" data-vi="Chứng nhận">Authenticity</span>
+          <span class="pd-meta-text" data-en="Natural, untreated stone" data-vi="Đá tự nhiên, không xử lý">Natural, untreated stone</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Story block -->
+  <section class="pd-story reveal">
+    <div>
+      <p class="eyebrow" data-en="The stone" data-vi="Về viên đá">The stone</p>
+      <h2 class="pd-story-title" data-en-html="A quiet <em>lavender</em> from the mountains" data-vi-html="Một sắc <em>lavender</em> lặng lẽ từ núi">A quiet <em>lavender</em> from the mountains</h2>
+      <p class="pd-story-text" data-en="Lavender jadeite is one of the rarer colors of natural jade. Its pale purple comes from trace manganese — a whisper of color locked in stone for millions of years. This piece was hand-selected for its even tone and soft inner glow; the small green drift near the crown is its signature." data-vi="Ngọc bích lavender là một trong những màu hiếm của ngọc bích tự nhiên. Sắc tím nhạt đến từ mangan — một lời thì thầm của màu bị khóa trong đá hàng triệu năm. Chiếc này được chọn thủ công vì tông màu đều và ánh sáng bên trong dịu nhẹ; vệt xanh nhỏ gần đỉnh là dấu ấn riêng của nó.">Lavender jadeite is one of the rarer colors of natural jade. Its pale purple comes from trace manganese — a whisper of color locked in stone for millions of years.</p>
+    </div>
+    <div style="aspect-ratio: 4/3; border-radius: 2px; overflow: hidden;">
+      <img src="/static/covers/jade_cover.jpg" alt="Detail" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="pd-related">
+    <div class="section-header reveal">
+      <p class="eyebrow" data-en="You may also like" data-vi="Có thể bạn cũng thích">You may also like</p>
+      <h2 class="section-title" data-en-html="More from the <em>collection</em>" data-vi-html="Thêm từ <em>bộ sưu tập</em>">More from the <em>collection</em></h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="products-grid" id="relatedGrid"></div>
+  </section>
+
+</main>
+
+<!-- CONTACT BAR -->
+<section class="contact-bar" id="contact">
+  <p class="contact-text" data-en-html="Want more information? <em>Just ask.</em>" data-vi-html="Muốn thêm thông tin? <em>Cứ hỏi.</em>">Want more photos? <em>Just ask.</em></p>
+  <div class="contact-actions">
+    <a href="https://www.facebook.com/profile.php?id=61573362579511&notif_id=1775878052660729&notif_t=follower_invite&ref=notif" target="_blank" rel="noopener" class="btn btn-primary"><span data-en="Message on Facebook" data-vi="Nhắn qua Facebook">Message on Facebook</span></a>
+    <a href="https://www.tiktok.com/@jadeitephithuyusa?_r=1&_t=ZP-95ZFjak4bdP" target="_blank" rel="noopener" class="btn btn-ghost"><span>TikTok</span></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Ja<span class="dot">·</span>de</div>
+      <p class="footer-tagline" data-en="Handcrafted jade &amp; agate jewelry. Selected by hand, one piece at a time." data-vi="Trang sức ngọc bích &amp; mã não thủ công. Tuyển chọn từng chiếc một.">Handcrafted jade &amp; agate jewelry. Selected by hand, one piece at a time.</p>
+    </div>
+    <div class="footer-links">
+      <!-- <div class="footer-col">
+        <h4 data-en="Help" data-vi="Hỗ trợ">Help</h4>
+        <a href="#contact" data-en="Contact us" data-vi="Liên hệ">Contact us</a>
+        <a href="#" data-en="Shipping &amp; care" data-vi="Vận chuyển &amp; bảo quản">Shipping &amp; care</a>
+        <a href="#" data-en="Authenticity" data-vi="Chứng nhận">Authenticity</a>
+      </div> -->
+      <div class="footer-col">
+        <h4 data-en="Follow" data-vi="Theo dõi">Follow</h4>
+        <a href="https://www.facebook.com/profile.php?id=61573362579511&notif_id=1775878052660729&notif_t=follower_invite&ref=notif" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9c0-.9.3-1.5 1.6-1.5H16V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V11H7v3h2.6v8H13z"/></svg>
+          Facebook
+        </a>
+        <a href="https://www.tiktok.com/@jadeitephithuyusa?_r=1&_t=ZP-95ZFjak4bdP" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.6 6.3a4.8 4.8 0 0 1-3-4.3h-3.4v13.3c0 1.4-1.1 2.5-2.5 2.5s-2.5-1.1-2.5-2.5S9.3 13 10.7 13c.3 0 .6.1.9.2V9.7c-.3 0-.6-.1-.9-.1-3.3 0-5.9 2.7-5.9 5.9s2.6 5.9 5.9 5.9 5.9-2.7 5.9-5.9V9.2c1.2.9 2.7 1.4 4.3 1.4V7.2c-.5 0-.9-.3-1.3-.9z"/></svg>
+          TikTok
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Jade. <span data-en="All rights reserved." data-vi="Đã đăng ký bản quyền.">All rights reserved.</span></span>
+  </div>
+</footer>
+
+<script>
+function escapeHTML(str){ const d=document.createElement('div'); d.textContent=str??''; return d.innerHTML; }
+
+// === LANG ===
+let currentLang = 'en';
+function toggleLang(){
+  currentLang = currentLang === 'en' ? 'vi' : 'en';
+  document.getElementById('langBtn').textContent = currentLang === 'en' ? 'VI' : 'EN';
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll('[data-en]').forEach(el => { const t = el.getAttribute(`data-${currentLang}`); if(t) el.textContent = t; });
+  document.querySelectorAll('[data-en-html]').forEach(el => { const t = el.getAttribute(`data-${currentLang}-html`); if(t) el.innerHTML = t; });
+  document.querySelectorAll('[data-en-placeholder]').forEach(el => { const t = el.getAttribute(`data-${currentLang}-placeholder`); if(t) el.placeholder = t; });
+  renderRelated();
+}
+
+function toggleMobileMenu(){
+  const l = document.querySelector('.nav-links');
+  l.style.display = l.style.display === 'flex' ? 'none' : 'flex';
+}
+
+// === Gallery ===
+document.querySelectorAll('.pd-thumb').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.pd-thumb').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const src = t.getAttribute('data-src');
+    if (src) document.getElementById('pdMainImg').src = src;
+  });
+});
+
+// === Qty ===
+// Stock is set by admin; expose a helper to update the visible availability when real data loads.
+function setStock(n) {
+  const el = document.getElementById('pdStockValue');
+  const dot = document.querySelector('.pd-stock-dot');
+  if (!el) return;
+  if (n > 0) {
+    const en = n === 1 ? '1 in stock' : `${n} in stock`;
+    const vi = n === 1 ? 'Còn 1 chiếc' : `Còn ${n} chiếc`;
+    el.setAttribute('data-en', en);
+    el.setAttribute('data-vi', vi);
+    el.textContent = currentLang === 'vi' ? vi : en;
+    dot?.classList.remove('out');
+  } else {
+    el.setAttribute('data-en', 'Sold');
+    el.setAttribute('data-vi', 'Đã bán');
+    el.textContent = currentLang === 'vi' ? 'Đã bán' : 'Sold';
+    dot?.classList.add('out');
+  }
+}
+
+// === Nav scroll ===
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', true); // always scrolled on PD
+});
+
+// === Reveal ===
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// === Related (placeholder) ===
+const RELATED = [
+  { name: 'Morning Dew', name_vi: 'Sương Sớm', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 165, image: 'covers/jade-cover.jpg', slug: 'morning-dew' },
+  { name: 'Garden Stones', name_vi: 'Đá Vườn', type: 'Agate Beads', type_vi: 'Hạt mã não', price: 92, tag: 'New', tag_vi: 'Mới', image: 'covers/cover-3.jpg', slug: 'garden-stones' },
+  { name: 'Soft Green', name_vi: 'Xanh Nhẹ', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 210, image: null, slug: 'soft-green' },
+  { name: 'Quiet Light', name_vi: 'Ánh Lặng', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 245, tag: 'Limited', tag_vi: 'Giới hạn', tag_color: 'gold', image: null, slug: 'quiet-light' },
+];
+function renderProductCard(p){
+  const safeName = escapeHTML(currentLang === 'vi' && p.name_vi ? p.name_vi : p.name);
+  const safeType = escapeHTML(currentLang === 'vi' && p.type_vi ? p.type_vi : p.type);
+  const tagLabel = p.tag ? escapeHTML(currentLang === 'vi' && p.tag_vi ? p.tag_vi : p.tag) : null;
+  const tagClass = p.tag_color === 'gold' ? ' gold' : '';
+  const imageHTML = p.image
+    ? `<img src="${p.image}" alt="${safeName}" loading="lazy">`
+    : `<div class="product-image-placeholder">
+         <div class="stripes"></div>
+         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg>
+         <span class="ph-label">Product photo</span>
+       </div>`;
+  const tagHTML = tagLabel ? `<span class="product-tag${tagClass}">${tagLabel}</span>` : '';
+  return `
+    <a class="product-card" href="/products/${encodeURIComponent(p.slug)}">
+      <div class="product-image">${imageHTML}${tagHTML}</div>
+      <div class="product-info">
+        <span class="product-type">${safeType}</span>
+        <h3 class="product-name">${safeName}</h3>
+        <p class="product-price"><span class="currency">$</span>${p.price.toFixed(2)}</p>
+      </div>
+    </a>`;
+}
+function renderRelated(){
+  document.getElementById('relatedGrid').innerHTML = RELATED.map(renderProductCard).join('');
+}
+renderRelated();
+</script>
+</body>
+</html>

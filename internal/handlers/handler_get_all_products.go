@@ -10,7 +10,7 @@ import (
 func (apicfg *ApiConfig) HandlerGetAllProducts(w http.ResponseWriter, r *http.Request) {
 
 	// pagination
-	limitStr := r.URL.Query().Get("limit")
+	limitStr := SanitizeString(r.URL.Query().Get("limit"))
 	limit := 20
 	if limitStr != "" {
 		parsed, err := strconv.Atoi(limitStr)
