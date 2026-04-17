@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-func (apicfg *ApiConfig) HandlerReset(w http.ResponseWriter, r *http.Request) {
+func (apicfg *ApiConfig) HandlerResetAdmins(w http.ResponseWriter, r *http.Request) {
 	// check if "dev"
 	if apicfg.Platform != "dev" {
 		w.WriteHeader(http.StatusForbidden)
@@ -14,7 +14,7 @@ func (apicfg *ApiConfig) HandlerReset(w http.ResponseWriter, r *http.Request) {
 
 	err := apicfg.DB.ResetAdmins(r.Context())
 	if err != nil {
-		log.Prinf("Error reseting admin table: %s\n", err)
+		log.Printf("Error reseting admin table: %s\n", err)
 		ResponseWithError(w, http.StatusInternalServerError, "Unable to reset admin table")
 		return
 	}

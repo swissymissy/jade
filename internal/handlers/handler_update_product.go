@@ -21,7 +21,7 @@ func (apicfg *ApiConfig) HandlerUpdateProduct(w http.ResponseWriter, r *http.Req
 	}
 
 	// check if product exists
-	_, err = apicfg.DB.GetProductByID(r.Context(), itemID)
+	item, err := apicfg.DB.GetProductByID(r.Context(), itemID)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			ResponseWithError(w, http.StatusNotFound, "Product not found")
@@ -66,6 +66,7 @@ func (apicfg *ApiConfig) HandlerUpdateProduct(w http.ResponseWriter, r *http.Req
 		Price:       req.Price,
 		Quantity:    req.Quantity,
 		Description: ToNullString(req.Description),
+		VideoUrl:    item.VideoUrl,
 		IsAvailable: req.IsAvailable,
 		ID:          itemID,
 	})

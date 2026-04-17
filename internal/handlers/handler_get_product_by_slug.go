@@ -1,17 +1,17 @@
-package handlers 
+package handlers
 
 import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 )
 
 // get product by slug
 func (apicfg *ApiConfig) HandlerGetProductBySlug(w http.ResponseWriter, r *http.Request) {
 	// get product slug from url
-	slugStr :=  r.PathValue("slug")
+	slugStr := r.PathValue("slug")
 	if slugStr == "" {
 		ResponseWithError(w, http.StatusBadRequest, "slug can't be empty")
 		return

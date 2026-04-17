@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
-	"log"
 )
 
 // get one single product based on product's ID
@@ -33,6 +33,10 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		}
 		fmt.Printf("Error fetching product from database: %s\n", err)
 		ResponseWithError(w, http.StatusInternalServerError, "Error fetching product")
+		return
+	}
+	if product.IsAvailable != 1 {
+		ResponseWithError(w, http.StatusNotFound, "Product not found")
 		return
 	}
 

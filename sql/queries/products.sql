@@ -6,7 +6,7 @@ LIMIT ?;
 
 -- name: GetProductByID :one
 SELECT * FROM products
-WHERE id = ? AND is_available = 1;
+WHERE id = ?;
 
 -- name: GetProductBySlug :one
 SELECT * FROM products

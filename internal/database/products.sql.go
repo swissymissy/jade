@@ -156,7 +156,7 @@ func (q *Queries) GetAllProducts(ctx context.Context, limit int64) ([]Product, e
 
 const getProductByID = `-- name: GetProductByID :one
 SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
-WHERE id = ? AND is_available = 1
+WHERE id = ?
 `
 
 func (q *Queries) GetProductByID(ctx context.Context, id int64) (Product, error) {
