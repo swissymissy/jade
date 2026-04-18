@@ -14,7 +14,7 @@ func ToNullString(s string) sql.NullString {
 	}
 }
 
-// sanititze user input 
+// sanititze user input
 func SanitizeString(s string) string {
 	s = strings.TrimSpace(s)
 	s = html.EscapeString(s)

@@ -70,6 +70,8 @@ func main() {
 		log.Fatal("S3_REGION environment variable is not set")
 	}
 
+	s3BaseURL := os.Getenv("S3_BASE_URL")
+
 	awsCfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion(s3Region))
 	if err != nil {
 		log.Fatal("Failed to load AWS config: %v", err)
@@ -85,6 +87,7 @@ func main() {
 		JWTSecret: jwtSecret,
 		S3Bucket:  s3Bucket,
 		S3Region:  s3Region,
+		S3BaseURL: s3BaseURL,
 		S3Client:  s3NewClient,
 	}
 
@@ -126,12 +129,15 @@ func main() {
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
 	// admind routes - protected
+	mux.HandleFunc("GET /api/admin/products", middleware.AuthRequired(apicfg.HandlerGetAllProductsAdmin, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products", middleware.AuthRequired(apicfg.HandlerCreateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products/{id}/images", middleware.AuthRequired(apicfg.HandlerUploadImages, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products/{id}/video", middleware.AuthRequired(apicfg.HandlerUploadVideo, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerDeleteProduct, apicfg.JWTSecret))
 	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
+	mux.HandleFunc("POST /api/admin/reset", apicfg.HandlerResetAdmins)
+	mux.HandleFunc("GET /api/admin/exists", apicfg.HandlerAdminExists)
 
 	// auth
 	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)

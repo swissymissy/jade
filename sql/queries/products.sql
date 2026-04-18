@@ -6,7 +6,7 @@ LIMIT ?;
 
 -- name: GetProductByID :one
 SELECT * FROM products
-WHERE id = ? AND is_available = 1;
+WHERE id = ?;
 
 -- name: GetProductBySlug :one
 SELECT * FROM products
@@ -58,3 +58,8 @@ WHERE id = ?;
 
 -- name: DeleteProduct :exec
 DELETE FROM products WHERE id = ?;
+
+-- name: GetAllProductsAdmin :many
+SELECT * FROM products
+ORDER BY created_at DESC
+LIMIT ?;

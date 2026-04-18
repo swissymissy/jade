@@ -8,7 +8,7 @@ import (
 // =====Admin===================
 type AdminLoginRequest struct {
 	Email    string `json:"email"`
-	Password string `json:"password'`
+	Password string `json:"password"`
 }
 
 type AdminCreateRequest struct {
@@ -29,7 +29,21 @@ type LoginAdmin struct {
 	Email     string    `json:"email"`
 	CreatedAt string    `json:"created_at"`
 	UpdatedAt string    `json:"updated_at"`
-	Token     string    `json:"token"`
+}
+
+type AdminProductListing struct {
+	ID          int64          `json:"id"`
+	Name        string         `json:"name"`
+	Slug        string         `json:"slug"`
+	Type        string         `json:"type"`
+	Price       float64        `json:"price"`
+	Quantity    int64          `json:"quantity"`
+	Description sql.NullString `json:"description"`
+	IsAvailable int64          `json:"is_available"`
+	VideoUrl    sql.NullString `json:"video_url"`
+	CreatedAt   string         `json:"created_at"`
+	UpdatedAt   string         `json:"updated_at"`
+	CoverImage  *ProductImage  `json:"cover_image"`
 }
 
 // ====Product================================
@@ -56,7 +70,7 @@ type ProductDetail struct {
 	Quantity    int64          `json:"quantity"`
 	Description sql.NullString `json:"description"`
 	IsAvailable int64          `json:"is_available"`
-	VideoUrl    sql.NullString `json:"video_url"`
+	VideoUrl    string         `json:"video_url"`
 	CreatedAt   string         `json:"created_at"`
 	UpdatedAt   string         `json:"updated_at"`
 	Images      []ProductImage `json:"images"`
@@ -85,6 +99,7 @@ type UploadedImage struct {
 	ID        int64  `json:"id"`
 	ProductID int64  `json:"product_id"`
 	S3Key     string `json:"s3_key"`
+	ImageURL  string `json:"image_url"`
 	CreatedAt string `json:"created_at"`
 }
 
@@ -92,6 +107,7 @@ type ProductImage struct {
 	ID        int64  `json:"id"`
 	ProductID int64  `json:"product_id"`
 	S3Key     string `json:"s3_key"`
+	ImageURL  string `json:"image_url"`
 	Cover     int64  `json:"cover"`
 	CreatedAt string `json:"created_at"`
 }

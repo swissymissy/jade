@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
-	"log"
 )
 
 // get one single product based on product's ID
@@ -35,6 +35,10 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		ResponseWithError(w, http.StatusInternalServerError, "Error fetching product")
 		return
 	}
+	if product.IsAvailable != 1 {
+		ResponseWithError(w, http.StatusNotFound, "Product not found")
+		return
+	}
 
 	// fetch product images
 	images, err := apicfg.DB.GetImagesByProductID(r.Context(), int64(productID))
@@ -49,9 +53,15 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 			ID:        img.ID,
 			ProductID: img.ProductID,
 			S3Key:     img.S3Key,
+			ImageURL: apicfg.publicAssetURL(img.S3Key),
 			Cover:     img.Cover,
 			CreatedAt: img.CreatedAt,
 		})
+	}
+
+	videoURL := ""
+	if product.VideoUrl.Valid {
+		videoURL = apicfg.publicAssetURL(product.VideoUrl.String)
 	}
 
 	ResponseWithJSON(w, http.StatusOK, ProductDetail{
@@ -63,7 +73,7 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		Quantity:    product.Quantity,
 		Description: product.Description,
 		IsAvailable: product.IsAvailable,
-		VideoUrl:    product.VideoUrl,
+		VideoUrl:    videoURL,
 		CreatedAt:   product.CreatedAt,
 		UpdatedAt:   product.UpdatedAt,
 		Images:      imageList,

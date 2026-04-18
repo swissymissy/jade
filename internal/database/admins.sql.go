@@ -95,6 +95,15 @@ func (q *Queries) GetAdminByID(ctx context.Context, id string) (Admin, error) {
 	return i, err
 }
 
+const resetAdmins = `-- name: ResetAdmins :exec
+DELETE FROM admins
+`
+
+func (q *Queries) ResetAdmins(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, resetAdmins)
+	return err
+}
+
 const updateAdminEmail = `-- name: UpdateAdminEmail :exec
 UPDATE admins
 SET email = ? , updated_at = datetime('now')

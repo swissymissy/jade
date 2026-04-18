@@ -162,24 +162,35 @@
 </footer>
 
 <script>
-
 function escapeHTML(str){ const d=document.createElement('div'); d.textContent=str??''; return d.innerHTML; }
+function t(en, vi){ return currentLang === 'vi' ? vi : en; }
+
+let currentLang = 'en';
+let catalogProducts = [];
+let renderedProducts = [];
 
 // === LANG ===
-let currentLang = 'en';
 function toggleLang(){
   currentLang = currentLang === 'en' ? 'vi' : 'en';
   document.getElementById('langBtn').textContent = currentLang === 'en' ? 'VI' : 'EN';
   document.documentElement.lang = currentLang;
   document.querySelectorAll('[data-en]').forEach(el => {
-    const t = el.getAttribute(`data-${currentLang}`); if (t) el.textContent = t;
+    const tValue = el.getAttribute(`data-${currentLang}`);
+    if (tValue) el.textContent = tValue;
   });
   document.querySelectorAll('[data-en-html]').forEach(el => {
-    const t = el.getAttribute(`data-${currentLang}-html`); if (t) el.innerHTML = t;
+    const tValue = el.getAttribute(`data-${currentLang}-html`);
+    if (tValue) el.innerHTML = tValue;
   });
   document.querySelectorAll('[data-en-placeholder]').forEach(el => {
-    const t = el.getAttribute(`data-${currentLang}-placeholder`); if (t) el.placeholder = t;
+    const tValue = el.getAttribute(`data-${currentLang}-placeholder`);
+    if (tValue) el.placeholder = tValue;
   });
+  if (renderedProducts.length) {
+    renderProducts(renderedProducts);
+  } else {
+    loadProducts();
+  }
 }
 
 // === HERO CAROUSEL ===
@@ -193,7 +204,7 @@ function gotoHero(i){
   heroSlides[heroIdx].classList.add('active');
   heroDots[heroIdx]?.classList.add('active');
 }
-heroDots.forEach(d => d.addEventListener('click', () => gotoHero(parseInt(d.dataset.idx))));
+heroDots.forEach(d => d.addEventListener('click', () => gotoHero(parseInt(d.dataset.idx, 10))));
 if (heroSlides.length > 1) setInterval(() => gotoHero(heroIdx + 1), 5200);
 
 // === NAV SCROLL ===
@@ -203,35 +214,31 @@ window.addEventListener('scroll', () => {
 
 // === REVEAL ===
 const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // === PRODUCTS ===
 const API_BASE = '/api';
-const S3_BASE = '';
-const PLACEHOLDER_PRODUCTS = [
-  { name: 'Lavender Mist', name_vi: 'Sương Lavender', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 180, tag: 'One of a kind', tag_vi: 'Độc bản', tag_color: 'gold', image: 'covers/jade-cover-1.jpg', slug: 'lavender-mist' },
-  { name: 'Morning Dew', name_vi: 'Sương Sớm', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 165, image: 'covers/jade-cover.jpg', slug: 'morning-dew' },
-  { name: 'Garden Stones', name_vi: 'Đá Vườn', type: 'Agate Beads', type_vi: 'Hạt mã não', price: 92, tag: 'New', tag_vi: 'Mới', image: 'covers/cover-3.jpg', slug: 'garden-stones' },
-  { name: 'Soft Green', name_vi: 'Xanh Nhẹ', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 210, image: null, slug: 'soft-green' },
-  { name: 'River Stone', name_vi: 'Đá Sông', type: 'Agate Beads', type_vi: 'Hạt mã não', price: 78, image: null, slug: 'river-stone' },
-  { name: 'Quiet Light', name_vi: 'Ánh Lặng', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 245, tag: 'Limited', tag_vi: 'Giới hạn', tag_color: 'gold', image: null, slug: 'quiet-light' },
-];
 
 function renderProduct(p) {
   const safeName = escapeHTML(currentLang === 'vi' && p.name_vi ? p.name_vi : p.name);
   const safeType = escapeHTML(currentLang === 'vi' && p.type_vi ? p.type_vi : p.type);
-  const imgSrc = p.image || (p.cover_image ? `${S3_BASE}/${p.cover_image.s3_key}` : null);
+  const imageURL = p.image || (p.cover_image ? p.cover_image.image_url : null);
   const tagLabel = p.tag ? escapeHTML(currentLang === 'vi' && p.tag_vi ? p.tag_vi : p.tag) : null;
   const tagClass = p.tag_color === 'gold' ? ' gold' : '';
 
-  const imageHTML = imgSrc
-    ? `<img src="${imgSrc}" alt="${safeName}" loading="lazy">`
+  const imageHTML = imageURL
+    ? `<img src="${imageURL}" alt="${safeName}" loading="lazy">`
     : `<div class="product-image-placeholder">
          <div class="stripes"></div>
          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg>
-         <span class="ph-label">Product photo</span>
+         <span class="ph-label">${t('Product photo', 'Ảnh sản phẩm')}</span>
        </div>`;
 
   const tagHTML = tagLabel ? `<span class="product-tag${tagClass}">${tagLabel}</span>` : '';
@@ -242,11 +249,12 @@ function renderProduct(p) {
       <div class="product-info">
         <span class="product-type">${safeType}</span>
         <h3 class="product-name">${safeName}</h3>
-        <p class="product-price"><span class="currency">$</span>${p.price.toFixed(2)}</p>
+        <p class="product-price"><span class="currency">$</span>${Number(p.price || 0).toFixed(2)}</p>
       </div>
     </a>
   `;
 }
+
 function renderSkeletons(n){
   return Array(n).fill(`
     <div class="product-card">
@@ -258,18 +266,37 @@ function renderSkeletons(n){
       </div>
     </div>`).join('');
 }
+
+function renderProducts(products){
+  renderedProducts = products;
+  document.getElementById('productsGrid').innerHTML = products.map(renderProduct).join('');
+}
+
+function renderCatalogMessage(message){
+  document.getElementById('productsGrid').innerHTML = `<p style="text-align:center;grid-column:1/-1;color:var(--ink-400);padding:60px 0;font-style:italic;font-family:var(--font-display);font-size:18px;">${escapeHTML(message)}</p>`;
+}
+
 async function loadProducts(){
   const grid = document.getElementById('productsGrid');
   grid.innerHTML = renderSkeletons(6);
+
   try {
-    const res = await fetch(`${API_BASE}/products`, { signal: AbortSignal.timeout(2500) });
-    if (!res.ok) throw new Error('no api');
-    const products = await res.json();
-    if (!Array.isArray(products) || products.length === 0) throw new Error('empty');
-    grid.innerHTML = products.map(renderProduct).join('');
+    const response = await fetch(`${API_BASE}/products`, { signal: AbortSignal.timeout(2500) });
+    if (!response.ok) throw new Error('no api');
+    const products = await response.json();
+    const list = Array.isArray(products) ? products : [];
+
+    catalogProducts = list;
+    if (!list.length) {
+      renderedProducts = [];
+      renderCatalogMessage(t('No products available yet.', 'Chưa có sản phẩm nào.'));
+      return;
+    }
+    renderProducts(list);
   } catch (err) {
-    // Render placeholder catalog so the frame is visible until real products are uploaded
-    grid.innerHTML = PLACEHOLDER_PRODUCTS.map(renderProduct).join('');
+    catalogProducts = [];
+    renderedProducts = [];
+    renderCatalogMessage(t('Unable to load products. Please try again later.', 'Không thể tải sản phẩm. Vui lòng thử lại.'));
   }
 }
 
@@ -278,24 +305,36 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
   clearTimeout(searchTimeout);
   const q = e.target.value.trim().toLowerCase();
   searchTimeout = setTimeout(() => {
-    const grid = document.getElementById('productsGrid');
-    if (!q) { loadProducts(); return; }
-    const filtered = PLACEHOLDER_PRODUCTS.filter(p =>
-      p.name.toLowerCase().includes(q) || (p.name_vi||'').toLowerCase().includes(q) ||
-      p.type.toLowerCase().includes(q) || (p.type_vi||'').toLowerCase().includes(q)
+    if (!q) {
+      renderProducts(catalogProducts);
+      return;
+    }
+
+    const filtered = catalogProducts.filter(p =>
+      (p.name || '').toLowerCase().includes(q) ||
+      (p.name_vi || '').toLowerCase().includes(q) ||
+      (p.type || '').toLowerCase().includes(q) ||
+      (p.type_vi || '').toLowerCase().includes(q)
     );
-    grid.innerHTML = filtered.length ? filtered.map(renderProduct).join('')
-      : `<p style="text-align:center;grid-column:1/-1;color:var(--ink-400);padding:60px 0;font-style:italic;font-family:var(--font-display);font-size:18px;">${currentLang==='vi'?'Không tìm thấy':'No results found'}</p>`;
+
+    if (!filtered.length) {
+      renderCatalogMessage(t('No results found', 'Không tìm thấy'));
+      return;
+    }
+    renderProducts(filtered);
   }, 300);
 });
 
-async function applyFilter(){
+function applyFilter(){
   const minV = parseFloat(document.getElementById('minPrice').value) || 0;
   const maxV = parseFloat(document.getElementById('maxPrice').value) || Infinity;
-  const grid = document.getElementById('productsGrid');
-  const filtered = PLACEHOLDER_PRODUCTS.filter(p => p.price >= minV && p.price <= maxV);
-  grid.innerHTML = filtered.length ? filtered.map(renderProduct).join('')
-    : `<p style="text-align:center;grid-column:1/-1;color:var(--ink-400);padding:60px 0;font-style:italic;font-family:var(--font-display);font-size:18px;">${currentLang==='vi'?'Không có sản phẩm trong khoảng giá này':'No products in this price range'}</p>`;
+
+  const filtered = catalogProducts.filter(p => Number(p.price || 0) >= minV && Number(p.price || 0) <= maxV);
+  if (!filtered.length) {
+    renderCatalogMessage(t('No products in this price range', 'Không có sản phẩm trong khoảng giá này'));
+    return;
+  }
+  renderProducts(filtered);
 }
 
 function toggleMobileMenu(){

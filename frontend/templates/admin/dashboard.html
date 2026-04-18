@@ -3,11 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard — Jade</title>
+<title>Admin Dashboard - Jade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-<main id="admin-dashboard"></main>
-<script src="/static/js/app.js"></script>
+<body class="admin-body">
+<main class="admin-shell">
+  <section class="admin-dashboard">
+    <header class="admin-header">
+      <div>
+        <a href="/" class="admin-brand">Ja<span class="dot">.</span>de</a>
+        <p class="admin-kicker">Catalog dashboard</p>
+        <h1 class="admin-title">Manage Jade's product collection</h1>
+        <p class="admin-copy">Create new pieces, refine older listings, control availability, and handle product media without touching the public storefront.</p>
+      </div>
+      <div class="admin-header-actions">
+        <a href="/" class="btn btn-outline-dark admin-action-link">View storefront</a>
+      </div>
+    </header>
+
+    <section class="admin-overview">
+      <article class="admin-panel admin-summary-panel">
+        <p class="eyebrow">Overview</p>
+        <div class="admin-summary-grid">
+          <div class="admin-stat-card">
+            <span class="admin-stat-label">Total products</span>
+            <strong class="admin-stat-value" id="statTotal">0</strong>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-label">Visible</span>
+            <strong class="admin-stat-value" id="statVisible">0</strong>
+          </div>
+          <div class="admin-stat-card">
+            <span class="admin-stat-label">Hidden</span>
+            <strong class="admin-stat-value" id="statHidden">0</strong>
+          </div>
+        </div>
+        <p class="admin-summary-note">Product details update through the main form. Images and videos stay on separate upload actions so media management remains clean.</p>
+      </article>
+
+      <article class="admin-panel">
+        <div class="admin-panel-head">
+          <div>
+            <p class="eyebrow">New product</p>
+            <h2>Add a piece to the catalog</h2>
+          </div>
+          <p class="admin-panel-copy">New items generate their slug automatically from the product name, and that slug updates whenever the saved name changes.</p>
+        </div>
+
+        <form id="createProductForm" class="admin-form admin-form-grid" novalidate>
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" required maxlength="120" placeholder="Imperial green jade bangle">
+          </label>
+          <label>
+            <span>Type</span>
+            <input type="text" name="type" required maxlength="80" placeholder="Bangle">
+          </label>
+          <label>
+            <span>Price (USD)</span>
+            <input type="number" name="price" required min="0.01" step="0.01" placeholder="185.00">
+          </label>
+          <label>
+            <span>Quantity</span>
+            <input type="number" name="quantity" required min="0" step="1" placeholder="1">
+          </label>
+          <label class="admin-field-wide">
+            <span>Description</span>
+            <textarea name="description" rows="4" placeholder="Tell shoppers about the stone, tone, size, or styling details."></textarea>
+          </label>
+          <div class="admin-form-actions">
+            <button type="submit" class="btn btn-dark">Create product</button>
+          </div>
+          <p class="admin-form-hint">Tip: after creating the product, use the media section in its card to upload images and a video.</p>
+        </form>
+      </article>
+    </section>
+
+    <section class="admin-toolbar admin-panel">
+      <div class="admin-toolbar-copy">
+        <p class="eyebrow">Catalog list</p>
+        <h2>Update or remove existing products</h2>
+      </div>
+      <label class="admin-search">
+        <span>Search catalog</span>
+        <input type="search" id="productSearch" placeholder="Search by name, type, or slug">
+      </label>
+    </section>
+
+    <p class="admin-feedback hidden" id="dashboardFeedback" role="status" aria-live="polite"></p>
+
+    <section id="adminProducts" class="admin-products-list" aria-live="polite"></section>
+  </section>
+</main>
+<script src="/static/js/admin_dashboard.js"></script>
 </body>
 </html>

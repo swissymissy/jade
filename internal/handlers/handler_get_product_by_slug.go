@@ -1,17 +1,17 @@
-package handlers 
+package handlers
 
 import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"net/http"
 	"log"
+	"net/http"
 )
 
 // get product by slug
 func (apicfg *ApiConfig) HandlerGetProductBySlug(w http.ResponseWriter, r *http.Request) {
 	// get product slug from url
-	slugStr :=  r.PathValue("slug")
+	slugStr := r.PathValue("slug")
 	if slugStr == "" {
 		ResponseWithError(w, http.StatusBadRequest, "slug can't be empty")
 		return
@@ -43,9 +43,15 @@ func (apicfg *ApiConfig) HandlerGetProductBySlug(w http.ResponseWriter, r *http.
 			ID:        img.ID,
 			ProductID: img.ProductID,
 			S3Key:     img.S3Key,
+			ImageURL: apicfg.publicAssetURL(img.S3Key),
 			Cover:     img.Cover,
 			CreatedAt: img.CreatedAt,
 		})
+	}
+
+	videoURL := ""
+	if product.VideoUrl.Valid {
+		videoURL = apicfg.publicAssetURL(product.VideoUrl.String)
 	}
 
 	ResponseWithJSON(w, http.StatusOK, ProductDetail{
@@ -57,7 +63,7 @@ func (apicfg *ApiConfig) HandlerGetProductBySlug(w http.ResponseWriter, r *http.
 		Quantity:    product.Quantity,
 		Description: product.Description,
 		IsAvailable: product.IsAvailable,
-		VideoUrl:    product.VideoUrl,
+		VideoUrl:    videoURL,
 		CreatedAt:   product.CreatedAt,
 		UpdatedAt:   product.UpdatedAt,
 		Images:      imageList,

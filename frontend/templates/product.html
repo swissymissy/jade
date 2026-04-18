@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lavender Mist — Jade</title>
+<title>Product — Jade</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
@@ -32,60 +32,51 @@
 
 <!-- PRODUCT DETAIL -->
 <main class="pd">
-
   <nav class="breadcrumb">
     <a href="/" data-en="Home" data-vi="Trang chủ">Home</a>
     <span class="sep">/</span>
     <a href="/#collection" data-en="Collection" data-vi="Bộ sưu tập">Collection</a>
     <span class="sep">/</span>
-    <span class="current" id="crumbName">Lavender Mist</span>
+    <span class="current" id="crumbName">Loading...</span>
   </nav>
 
   <div class="pd-grid">
     <!-- GALLERY -->
     <div class="pd-gallery">
       <div class="pd-main-img" id="pdMain">
-        <img src="/static/covers/jade_cover_1.jpg" alt="Lavender Mist jade bangle" id="pdMainImg">
+        <img src="/static/covers/jade_cover_1.jpg" alt="Jade jewelry piece" id="pdMainImg">
       </div>
       <div class="pd-thumbs" id="pdThumbs">
-        <div class="pd-thumb active" data-src="/static/covers/jade_cover_1.jpg"><img src="/static/covers/jade_cover_1.jpg" alt=""></div>
-        <div class="pd-thumb" data-src="/static/covers/jade_cover.jpg"><img src="/static/covers/jade_cover.jpg" alt=""></div>
-        <div class="pd-thumb" data-src="/static/covers/cover_3.jpg"><img src="/static/covers/cover_3.jpg" alt=""></div>
-        <div class="pd-thumb" data-placeholder="1">
-          <div class="product-image-placeholder" style="inset:0;position:absolute;">
-            <div class="stripes"></div>
-            <span class="ph-label" style="font-size:8px;">More</span>
-          </div>
+        <div class="pd-thumb active" data-src="/static/covers/jade_cover_1.jpg" data-alt="Jade jewelry piece">
+          <img src="/static/covers/jade_cover_1.jpg" alt="Jade jewelry piece">
         </div>
       </div>
     </div>
 
     <!-- INFO -->
     <div class="pd-info">
-      <span class="pd-type" data-en="Lavender Jade Bangle" data-vi="Vòng ngọc Lavender">Lavender Jade Bangle</span>
-      <h1 class="pd-name" id="pdName" data-en-html="Lavender <em>Mist</em>" data-vi-html="Sương <em>Lavender</em>">Lavender <em>Mist</em></h1>
+      <span class="pd-type" id="pdType">Jade Bangle</span>
+      <h1 class="pd-name" id="pdName">Loading product...</h1>
 
-      <p class="pd-price">
-        <span class="currency">$</span>180<span style="font-weight:400">.00</span>
-      </p>
+      <p class="pd-price" id="pdPrice"><span class="currency">$</span>0.00</p>
 
       <div class="pd-divider"></div>
 
-      <p class="pd-desc" data-en="A soft lavender-white jade bangle with gentle green veining. Carved from a single piece of natural jadeite, polished to a quiet sheen. Each bangle is unique — the pattern you see is the one you'll wear." data-vi="Một chiếc vòng ngọc bích màu lavender-trắng dịu nhẹ với những vệt xanh mảnh. Được tạc từ một khối ngọc bích tự nhiên, đánh bóng đến độ sáng nhẹ. Mỗi chiếc vòng đều là độc bản — hoa văn bạn thấy là hoa văn bạn sẽ đeo.">A soft lavender-white jade bangle with gentle green veining. Carved from a single piece of natural jadeite, polished to a quiet sheen. Each bangle is unique — the pattern you see is the one you'll wear.</p>
+      <p class="pd-desc" id="pdDesc">Loading product description...</p>
 
       <!-- Attributes -->
       <div class="pd-attrs">
         <div class="pd-attr">
-          <span class="pd-attr-label" data-en="Stone" data-vi="Đá">Stone</span>
-          <span class="pd-attr-value" data-en="Natural Jadeite" data-vi="Ngọc bích tự nhiên">Natural Jadeite</span>
-        </div>
-        <div class="pd-attr">
           <span class="pd-attr-label" data-en="Type" data-vi="Loại">Type</span>
-          <span class="pd-attr-value" data-en="Lavender / Type A" data-vi="Lavender / Loại A">Lavender / Type A</span>
+          <span class="pd-attr-value" id="pdAttrType">Natural Jadeite</span>
         </div>
         <div class="pd-attr">
-          <span class="pd-attr-label" data-en="Finish" data-vi="Hoàn thiện">Finish</span>
-          <span class="pd-attr-value" data-en="Hand-polished" data-vi="Đánh bóng thủ công">Hand-polished</span>
+          <span class="pd-attr-label" data-en="Product Code" data-vi="Mã sản phẩm">Product Code</span>
+          <span class="pd-attr-value" id="pdAttrSlug">--</span>
+        </div>
+        <div class="pd-attr">
+          <span class="pd-attr-label" data-en="Last Updated" data-vi="Cập nhật">Last Updated</span>
+          <span class="pd-attr-value" id="pdAttrUpdated">--</span>
         </div>
       </div>
 
@@ -94,11 +85,11 @@
         <div class="pd-fit-head">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>
           <div>
-            <span class="pd-fit-label" data-en="Inner diameter" data-vi="Đường kính trong">Inner diameter</span>
-            <span class="pd-fit-value" data-en="50 – 51 mm" data-vi="50 – 51 mm">50 – 51 mm</span>
+            <span class="pd-fit-label" data-en="Quantity Available" data-vi="Số lượng còn">Quantity Available</span>
+            <span class="pd-fit-value" id="pdFitValue">--</span>
           </div>
         </div>
-        <p class="pd-fit-note" data-en="Comfortable fit for wrists 50 – 52 mm." data-vi="Vừa vặn cho cổ tay 50 – 52 mm.">Comfortable fit for wrists 50 – 52 mm.</p>
+        <p class="pd-fit-note" data-en="Need more photos or sizing help? Message Jade and we'll help you choose the right piece." data-vi="Cần thêm hình ảnh hoặc tư vấn kích thước? Hãy nhắn Jade để được hỗ trợ.">Need more photos or sizing help? Message Jade and we'll help you choose the right piece.</p>
       </div>
 
       <!-- Availability + CTA -->
@@ -107,14 +98,10 @@
           <span class="pd-stock-dot" aria-hidden="true"></span>
           <span class="pd-stock-text">
             <span class="pd-stock-label" data-en="Availability" data-vi="Tình trạng">Availability</span>
-            <span class="pd-stock-value" id="pdStockValue" data-en="1 in stock" data-vi="Còn 1 chiếc">1 in stock</span>
+            <span class="pd-stock-value" id="pdStockValue" data-en="Loading..." data-vi="Đang tải...">Loading...</span>
           </span>
         </div>
         <div class="pd-btn-row" style="flex:1">
-          <!-- <a href="#contact" class="btn btn-dark pd-cta">
-            <span data-en="Reserve this piece" data-vi="Giữ chỗ chiếc này">Reserve this piece</span>
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </a> -->
           <a href="https://www.facebook.com/profile.php?id=61573362579511&notif_id=1775878052660729&notif_t=follower_invite&ref=notif" target="_blank" rel="noopener" class="btn btn-outline-dark pd-cta">
             <span data-en="Ask on Messenger" data-vi="Hỏi qua Messenger">Ask on Messenger</span>
           </a>
@@ -142,13 +129,11 @@
   <!-- Story block -->
   <section class="pd-story reveal">
     <div>
-      <p class="eyebrow" data-en="The stone" data-vi="Về viên đá">The stone</p>
-      <h2 class="pd-story-title" data-en-html="A quiet <em>lavender</em> from the mountains" data-vi-html="Một sắc <em>lavender</em> lặng lẽ từ núi">A quiet <em>lavender</em> from the mountains</h2>
-      <p class="pd-story-text" data-en="Lavender jadeite is one of the rarer colors of natural jade. Its pale purple comes from trace manganese — a whisper of color locked in stone for millions of years. This piece was hand-selected for its even tone and soft inner glow; the small green drift near the crown is its signature." data-vi="Ngọc bích lavender là một trong những màu hiếm của ngọc bích tự nhiên. Sắc tím nhạt đến từ mangan — một lời thì thầm của màu bị khóa trong đá hàng triệu năm. Chiếc này được chọn thủ công vì tông màu đều và ánh sáng bên trong dịu nhẹ; vệt xanh nhỏ gần đỉnh là dấu ấn riêng của nó.">Lavender jadeite is one of the rarer colors of natural jade. Its pale purple comes from trace manganese — a whisper of color locked in stone for millions of years.</p>
+      <p class="eyebrow" data-en="About This Piece" data-vi="Về sản phẩm">About This Piece</p>
+      <h2 class="pd-story-title" id="pdStoryTitle">Selected with care for the collection</h2>
+      <p class="pd-story-text" id="pdStoryText">This product page now loads its details from the store catalog. Add a richer description in the admin dashboard and it will appear here automatically.</p>
     </div>
-    <div style="aspect-ratio: 4/3; border-radius: 2px; overflow: hidden;">
-      <img src="/static/covers/jade_cover.jpg" alt="Detail" style="width:100%;height:100%;object-fit:cover;">
-    </div>
+    <div id="pdStoryMedia" style="aspect-ratio: 4/3; border-radius: 2px; overflow: hidden;"></div>
   </section>
 
   <!-- Related -->
@@ -167,7 +152,7 @@
 <section class="contact-bar" id="contact">
   <p class="contact-text" data-en-html="Want more information? <em>Just ask.</em>" data-vi-html="Muốn thêm thông tin? <em>Cứ hỏi.</em>">Want more photos? <em>Just ask.</em></p>
   <div class="contact-actions">
-    <a href="https://www.facebook.com/profile.php?id=61573362579511&notif_id=1775878052660729&notif_t=follower_invite&ref=notif" target="_blank" rel="noopener" class="btn btn-primary"><span data-en="Message on Facebook" data-vi="Nhắn qua Facebook">Message on Facebook</span></a>
+    <a href="https://www.facebook.com/profile.php?id=61573362579511" target="_blank" rel="noopener" class="btn btn-primary"><span data-en="Message on Facebook" data-vi="Nhắn qua Facebook">Message on Facebook</span></a>
     <a href="https://www.tiktok.com/@jadeitephithuyusa?_r=1&_t=ZP-95ZFjak4bdP" target="_blank" rel="noopener" class="btn btn-ghost"><span>TikTok</span></a>
   </div>
 </section>
@@ -188,7 +173,7 @@
       </div> -->
       <div class="footer-col">
         <h4 data-en="Follow" data-vi="Theo dõi">Follow</h4>
-        <a href="https://www.facebook.com/profile.php?id=61573362579511&notif_id=1775878052660729&notif_t=follower_invite&ref=notif" target="_blank" rel="noopener">
+        <a href="https://www.facebook.com/profile.php?id=61573362579511" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 22v-8h2.5l.5-3H13V9c0-.9.3-1.5 1.6-1.5H16V5c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V11H7v3h2.6v8H13z"/></svg>
           Facebook
         </a>
@@ -208,31 +193,59 @@
 function escapeHTML(str){ const d=document.createElement('div'); d.textContent=str??''; return d.innerHTML; }
 
 // === LANG ===
-let currentLang = 'en';
-function toggleLang(){
-  currentLang = currentLang === 'en' ? 'vi' : 'en';
-  document.getElementById('langBtn').textContent = currentLang === 'en' ? 'VI' : 'EN';
-  document.documentElement.lang = currentLang;
-  document.querySelectorAll('[data-en]').forEach(el => { const t = el.getAttribute(`data-${currentLang}`); if(t) el.textContent = t; });
-  document.querySelectorAll('[data-en-html]').forEach(el => { const t = el.getAttribute(`data-${currentLang}-html`); if(t) el.innerHTML = t; });
-  document.querySelectorAll('[data-en-placeholder]').forEach(el => { const t = el.getAttribute(`data-${currentLang}-placeholder`); if(t) el.placeholder = t; });
-  renderRelated();
+function t(en, vi){ return currentLang === 'vi' ? vi : en; }
+function toCurrency(n){ return Number(n || 0).toFixed(2); }
+function readNullString(v){
+  if (!v) return '';
+  if (typeof v === 'string') return v;
+  if (typeof v === 'object' && v.Valid) return v.String || '';
+  return '';
+}
+function formatTimestamp(v){
+  if (!v) return '--';
+  const d = new Date(v.replace(' ', 'T') + 'Z');
+  if (Number.isNaN(d.getTime())) return v;
+  return d.toLocaleDateString(currentLang === 'vi' ? 'vi-VN' : 'en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
+function getSlugFromPath(){
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  return parts.length ? decodeURIComponent(parts[parts.length - 1]) : '';
 }
 
 function toggleMobileMenu(){
   const l = document.querySelector('.nav-links');
   l.style.display = l.style.display === 'flex' ? 'none' : 'flex';
 }
-
-// === Gallery ===
-document.querySelectorAll('.pd-thumb').forEach(t => {
-  t.addEventListener('click', () => {
-    document.querySelectorAll('.pd-thumb').forEach(x => x.classList.remove('active'));
-    t.classList.add('active');
-    const src = t.getAttribute('data-src');
-    if (src) document.getElementById('pdMainImg').src = src;
+function productImagePlaceholder(label = 'Product photo'){
+  return `<div class="product-image-placeholder">
+    <div class="stripes"></div>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg>
+    <span class="ph-label">${escapeHTML(label)}</span>
+  </div>`;
+}
+function bindGalleryThumbs(){
+  document.querySelectorAll('.pd-thumb').forEach(t => {
+    t.addEventListener('click', () => {
+      const src = t.getAttribute('data-src');
+      if (!src) return;
+      document.querySelectorAll('.pd-thumb').forEach(x => x.classList.remove('active'));
+      t.classList.add('active');
+      const main = document.getElementById('pdMain');
+      if (!main) return;
+      const kind = t.getAttribute('data-kind') || 'image';
+      const alt = t.getAttribute('data-alt') || 'Product image';
+      if (kind === 'video') {
+        main.innerHTML = `<video src="${src}" controls autoplay playsinline preload="metadata" id="pdMainVideo" style="width:100%;height:100%;object-fit:cover;background:#000;"></video>`;
+      } else {
+        main.innerHTML = `<img src="${src}" alt="${escapeHTML(alt)}" id="pdMainImg">`;
+      }
+    });
   });
-});
+}
 
 // === Qty ===
 // Stock is set by admin; expose a helper to update the visible availability when real data loads.
@@ -255,6 +268,143 @@ function setStock(n) {
   }
 }
 
+function renderGallery(product){
+  const images = Array.isArray(product.images) ? [...product.images] : [];
+  images.sort((a, b) => Number(b.cover || 0) - Number(a.cover || 0));
+  const gallery = images
+    .map(img => ({
+      kind: 'image',
+      src: img.image_url,
+      alt: product.name || 'Product image',
+    }))
+    .filter(img => img.src);
+
+  const videoURL = typeof product.video_url === 'string' ? product.video_url : '';
+  if (videoURL) {
+    gallery.push({
+      kind: 'video',
+      src: videoURL,
+      alt: `${product.name || 'Product'} video`,
+    });
+  }
+
+  const mainWrap = document.getElementById('pdMain');
+  const thumbs = document.getElementById('pdThumbs');
+  const storyWrap = document.getElementById('pdStoryMedia');
+  const coverImage = gallery.find(item => item.kind === 'image') || null;
+
+  if (storyWrap) {
+    storyWrap.innerHTML = coverImage
+      ? `<img src="${coverImage.src}" alt="${escapeHTML(coverImage.alt)}" id="pdStoryImg" style="width:100%;height:100%;object-fit:cover;">`
+      : productImagePlaceholder('No product photo');
+  }
+
+  if (!gallery.length) {
+    mainWrap.innerHTML = productImagePlaceholder('No product photo');
+    thumbs.innerHTML = '';
+    return;
+  }
+
+  const primary = gallery[0];
+  mainWrap.innerHTML = primary.kind === 'video'
+    ? `<video src="${primary.src}" controls playsinline preload="metadata" id="pdMainVideo" style="width:100%;height:100%;object-fit:cover;background:#000;"></video>`
+    : `<img src="${primary.src}" alt="${escapeHTML(primary.alt)}" id="pdMainImg">`;
+
+  thumbs.innerHTML = gallery.map((item, idx) => {
+    const activeClass = idx === 0 ? ' active' : '';
+    if (item.kind === 'video') {
+      return `
+        <div class="pd-thumb pd-thumb-video${activeClass}" data-src="${item.src}" data-alt="${escapeHTML(item.alt)}" data-kind="video">
+          <video src="${item.src}" muted preload="metadata" playsinline></video>
+          <span class="pd-thumb-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </div>`;
+    }
+    return `
+      <div class="pd-thumb${activeClass}" data-src="${item.src}" data-alt="${escapeHTML(item.alt)}" data-kind="image">
+        <img src="${item.src}" alt="${escapeHTML(item.alt)}">
+      </div>`;
+  }).join('');
+
+  bindGalleryThumbs();
+}
+
+function renderProduct(product){
+  currentProduct = product;
+  const description = readNullString(product.description);
+  const productName = product.name || 'Product';
+  const productType = product.type || 'Jade Piece';
+
+  document.title = `${productName} - Jade`;
+  document.getElementById('crumbName').textContent = productName;
+  document.getElementById('pdType').textContent = productType;
+  document.getElementById('pdName').textContent = productName;
+  document.getElementById('pdPrice').innerHTML = `<span class="currency">$</span>${toCurrency(product.price)}`;
+  document.getElementById('pdDesc').textContent = description || t(
+    'Details for this piece will appear here once added in the admin dashboard.',
+    'Chi tiết của sản phẩm sẽ xuất hiện ở đây sau khi được thêm trong trang quản trị.'
+  );
+  document.getElementById('pdAttrType').textContent = productType;
+  document.getElementById('pdAttrSlug').textContent = product.slug || '--';
+  document.getElementById('pdAttrUpdated').textContent = formatTimestamp(product.updated_at || product.created_at);
+  document.getElementById('pdFitValue').textContent = String(product.quantity ?? 0);
+  document.getElementById('pdStoryTitle').innerHTML = currentLang === 'vi'
+    ? `${escapeHTML(productName)} <em>được chọn kỹ lưỡng</em>`
+    : `${escapeHTML(productName)} <em>selected with care</em>`;
+  document.getElementById('pdStoryText').textContent = description || t(
+    'This piece is part of Jade\'s hand-selected collection of natural stone jewelry.',
+    'Sản phẩm này là một phần trong bộ sưu tập trang sức đá tự nhiên được Jade tuyển chọn thủ công.'
+  );
+  setStock(Number(product.quantity || 0));
+  renderGallery(product);
+}
+
+function renderProductError(message){
+  document.title = 'Product - Jade';
+  document.querySelector('main.pd').innerHTML = `
+    <section class="section" style="min-height:50vh;display:grid;place-items:center;text-align:center;">
+      <div>
+        <p class="eyebrow">${t('Product', 'Sản phẩm')}</p>
+        <h1 class="section-title">${t("We couldn't load this piece", 'Không thể tải sản phẩm này')}</h1>
+        <p class="section-sub">${escapeHTML(message)}</p>
+        <a href="/#collection" class="btn btn-dark" style="margin-top:24px;">${t('Back to Collection', 'Quay lại bộ sưu tập')}</a>
+      </div>
+    </section>`;
+}
+
+async function fetchJSON(url){
+  const res = await fetch(url);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Request failed');
+  return data;
+}
+
+let currentLang = 'en';
+let currentProduct = null;
+let relatedProducts = [];
+
+function toggleLang(){
+  currentLang = currentLang === 'en' ? 'vi' : 'en';
+  document.getElementById('langBtn').textContent = currentLang === 'en' ? 'VI' : 'EN';
+  document.documentElement.lang = currentLang;
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const t = el.getAttribute(`data-${currentLang}`);
+    if (t) el.textContent = t;
+  });
+  document.querySelectorAll('[data-en-html]').forEach(el => {
+    const t = el.getAttribute(`data-${currentLang}-html`);
+    if (t) el.innerHTML = t;
+  });
+  if (currentProduct) renderProduct(currentProduct);
+  renderRelated();
+}
+
+function toggleMobileMenu(){
+  const l = document.querySelector('.nav-links');
+  l.style.display = l.style.display === 'flex' ? 'none' : 'flex';
+}
+
 // === Nav scroll ===
 window.addEventListener('scroll', () => {
   document.getElementById('nav').classList.toggle('scrolled', true); // always scrolled on PD
@@ -262,44 +412,73 @@ window.addEventListener('scroll', () => {
 
 // === Reveal ===
 const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      io.unobserve(e.target);
+    }
+  });
 }, { threshold: 0.12 });
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-// === Related (placeholder) ===
-const RELATED = [
-  { name: 'Morning Dew', name_vi: 'Sương Sớm', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 165, image: 'covers/jade-cover.jpg', slug: 'morning-dew' },
-  { name: 'Garden Stones', name_vi: 'Đá Vườn', type: 'Agate Beads', type_vi: 'Hạt mã não', price: 92, tag: 'New', tag_vi: 'Mới', image: 'covers/cover-3.jpg', slug: 'garden-stones' },
-  { name: 'Soft Green', name_vi: 'Xanh Nhẹ', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 210, image: null, slug: 'soft-green' },
-  { name: 'Quiet Light', name_vi: 'Ánh Lặng', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 245, tag: 'Limited', tag_vi: 'Giới hạn', tag_color: 'gold', image: null, slug: 'quiet-light' },
-];
 function renderProductCard(p){
-  const safeName = escapeHTML(currentLang === 'vi' && p.name_vi ? p.name_vi : p.name);
-  const safeType = escapeHTML(currentLang === 'vi' && p.type_vi ? p.type_vi : p.type);
-  const tagLabel = p.tag ? escapeHTML(currentLang === 'vi' && p.tag_vi ? p.tag_vi : p.tag) : null;
-  const tagClass = p.tag_color === 'gold' ? ' gold' : '';
-  const imageHTML = p.image
-    ? `<img src="${p.image}" alt="${safeName}" loading="lazy">`
-    : `<div class="product-image-placeholder">
-         <div class="stripes"></div>
-         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="3"/></svg>
-         <span class="ph-label">Product photo</span>
-       </div>`;
-  const tagHTML = tagLabel ? `<span class="product-tag${tagClass}">${tagLabel}</span>` : '';
+  const safeName = escapeHTML(p.name || 'Product');
+  const safeType = escapeHTML(p.type || 'Jade Piece');
+  const imageURL = p.cover_image ? p.cover_image.image_url : null;
+  const imageHTML = imageURL
+    ? `<img src="${imageURL}" alt="${safeName}" loading="lazy">`
+    : productImagePlaceholder('Product photo');
+
   return `
     <a class="product-card" href="/products/${encodeURIComponent(p.slug)}">
-      <div class="product-image">${imageHTML}${tagHTML}</div>
+      <div class="product-image">${imageHTML}</div>
       <div class="product-info">
         <span class="product-type">${safeType}</span>
         <h3 class="product-name">${safeName}</h3>
-        <p class="product-price"><span class="currency">$</span>${p.price.toFixed(2)}</p>
+        <p class="product-price"><span class="currency">$</span>${toCurrency(p.price)}</p>
       </div>
     </a>`;
 }
+
 function renderRelated(){
-  document.getElementById('relatedGrid').innerHTML = RELATED.map(renderProductCard).join('');
+  const grid = document.getElementById('relatedGrid');
+  if (!grid) return;
+  if (!relatedProducts.length) {
+    grid.innerHTML = `<p style="text-align:center;grid-column:1/-1;color:var(--ink-400);padding:40px 0;">${t('Explore more pieces from the collection on the homepage.', 'Khám phá thêm các sản phẩm khác trong bộ sưu tập ở trang chủ.')}</p>`;
+    return;
+  }
+  grid.innerHTML = relatedProducts.map(renderProductCard).join('');
 }
-renderRelated();
+
+async function loadRelated(currentSlug){
+  try {
+    const products = await fetchJSON('/api/products');
+    relatedProducts = Array.isArray(products)
+      ? products.filter(p => p.slug !== currentSlug).slice(0, 4)
+      : [];
+  } catch {
+    relatedProducts = [];
+  }
+  renderRelated();
+}
+
+async function loadProductPage(){
+  const slug = getSlugFromPath();
+  if (!slug) {
+    renderProductError(t('This product link is missing its slug.', 'Liên kết sản phẩm này đang thiếu slug.'));
+    return;
+  }
+
+  try {
+    const product = await fetchJSON(`/api/products/slug/${encodeURIComponent(slug)}`);
+    renderProduct(product);
+    await loadRelated(product.slug);
+  } catch (err) {
+    renderProductError(err.message || t('Please try again in a moment.', 'Vui lòng thử lại sau ít phút.'));
+  }
+}
+
+loadProductPage();
 </script>
 </body>
 </html>

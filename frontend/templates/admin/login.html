@@ -3,11 +3,187 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Login — Jade</title>
+<title>Admin — Jade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600&family=Be+Vietnam+Pro:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/static/css/style.css">
 </head>
-<body>
-<main id="admin-login"></main>
-<script src="/static/js/app.js"></script>
+<body class="admin-body">
+
+<main class="admin-auth">
+  <a href="/" class="admin-brand">Ja<span class="dot">·</span>de</a>
+
+  <!-- LOGIN -->
+  <section class="auth-card" data-view="login">
+    <h1>Welcome back</h1>
+    <p class="auth-sub">Sign in to manage your catalog.</p>
+    <form id="loginForm" novalidate>
+      <label>Email
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label>Password
+        <input type="password" name="password" required autocomplete="current-password">
+      </label>
+      <button type="submit" class="btn btn-primary">Sign in</button>
+      <p class="auth-error" id="loginError"></p>
+    </form>
+    <div class="auth-switch">
+      <a href="#" data-switch="reset">Forgot password?</a>
+    </div>
+  </section>
+
+  <!-- REGISTER (first-time setup) -->
+  <section class="auth-card hidden" data-view="register">
+    <h1>Set up admin</h1>
+    <p class="auth-sub">Create the admin account for this store. One-time setup.</p>
+    <form id="registerForm" novalidate>
+      <label>Email
+        <input type="email" name="email" required autocomplete="email">
+      </label>
+      <label>Password
+        <input type="password" name="password" required minlength="8" autocomplete="new-password">
+      </label>
+      <label>Confirm password
+        <input type="password" name="confirm" required minlength="8" autocomplete="new-password">
+      </label>
+      <button type="submit" class="btn btn-primary">Create admin</button>
+      <p class="auth-error" id="registerError"></p>
+    </form>
+  </section>
+
+  <!-- RECOVERY CODE REVEAL (shown once, after register or reset) -->
+  <section class="auth-card hidden" data-view="recovery">
+    <h1>Save your recovery code</h1>
+    <p class="auth-sub">Store this somewhere safe. It's the only way to reset your password if you forget it. You won't see it again.</p>
+    <div class="recovery-box">
+      <code id="recoveryCode"></code>
+      <button type="button" id="copyRecovery" class="btn btn-ghost">Copy</button>
+    </div>
+    <button type="button" class="btn btn-primary" data-switch="login">I've saved it — continue</button>
+  </section>
+
+  <!-- RESET PASSWORD -->
+  <section class="auth-card hidden" data-view="reset">
+    <h1>Reset password</h1>
+    <p class="auth-sub">Use your recovery code to set a new password.</p>
+    <form id="resetForm" novalidate>
+      <label>Recovery code
+        <input type="text" name="recovery_code" required autocomplete="off">
+      </label>
+      <label>New password
+        <input type="password" name="new_password" required minlength="8" autocomplete="new-password">
+      </label>
+      <button type="submit" class="btn btn-primary">Reset password</button>
+      <p class="auth-error" id="resetError"></p>
+    </form>
+    <div class="auth-switch">
+      <a href="#" data-switch="login">Back to sign in</a>
+    </div>
+  </section>
+</main>
+
+<script>
+const views = document.querySelectorAll('[data-view]');
+function showView(name) {
+  views.forEach(v => v.classList.toggle('hidden', v.dataset.view !== name));
+}
+
+document.querySelectorAll('[data-switch]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    showView(el.dataset.switch);
+  });
+});
+
+async function postJSON(url, body) {
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify(body),
+  });
+  const data = await res.json().catch(() => ({}));
+  return { ok: res.ok, status: res.status, data };
+}
+
+// decide first view based on whether admin exists
+(async () => {
+  try {
+    const res = await fetch('/api/admin/exists');
+    const data = await res.json();
+    showView(data.exists ? 'login' : 'register');
+  } catch {
+    showView('login');
+  }
+})();
+
+// LOGIN
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('loginError');
+  err.textContent = '';
+  const fd = new FormData(e.target);
+  const { ok, data } = await postJSON('/api/admin/login', {
+    email: fd.get('email'),
+    password: fd.get('password'),
+  });
+  if (!ok) {
+    err.textContent = data.error || 'Sign in failed.';
+    return;
+  }
+  window.location = '/admin/dashboard';
+});
+
+// REGISTER
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('registerError');
+  err.textContent = '';
+  const fd = new FormData(e.target);
+  const pw = fd.get('password');
+  if (pw !== fd.get('confirm')) {
+    err.textContent = "Passwords don't match.";
+    return;
+  }
+  const { ok, data } = await postJSON('/api/admin/register', {
+    email: fd.get('email'),
+    password: pw,
+  });
+  if (!ok) {
+    err.textContent = data.error || 'Registration failed.';
+    return;
+  }
+  document.getElementById('recoveryCode').textContent = data.recovery_code;
+  showView('recovery');
+});
+
+// RESET
+document.getElementById('resetForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const err = document.getElementById('resetError');
+  err.textContent = '';
+  const fd = new FormData(e.target);
+  const { ok, data } = await postJSON('/api/admin/reset-password', {
+    recovery_code: fd.get('recovery_code'),
+    new_password: fd.get('new_password'),
+  });
+  if (!ok) {
+    err.textContent = data.error || 'Reset failed.';
+    return;
+  }
+  document.getElementById('recoveryCode').textContent = data.recovery_code;
+  showView('recovery');
+});
+
+// COPY recovery code
+document.getElementById('copyRecovery').addEventListener('click', () => {
+  const btn = document.getElementById('copyRecovery');
+  navigator.clipboard.writeText(document.getElementById('recoveryCode').textContent).then(() => {
+    btn.textContent = 'Copied';
+    setTimeout(() => { btn.textContent = 'Copy'; }, 1800);
+  });
+});
+</script>
 </body>
 </html>

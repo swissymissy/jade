@@ -26,3 +26,6 @@ SELECT * FROM admins LIMIT 1;
 UPDATE admins
 SET recovery_hash = ?, updated_at = datetime('now')
 WHERE id = ?;
+
+-- name: ResetAdmins :exec
+DELETE FROM admins;

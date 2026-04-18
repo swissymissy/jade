@@ -61,6 +61,17 @@ func (apicfg *ApiConfig) AdminLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// set cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:     "jade_session",
+		Value:    token,
+		Path:     "/",
+		HttpOnly: true,
+		Secure:   apicfg.Platform == "prod",
+		SameSite: http.SameSiteLaxMode,
+		MaxAge:   60 * 60 * 24, // 24h
+	})
+
 	log.Printf("Admin %s has logged in\n", admin.Email)
 
 	ResponseWithJSON(w, http.StatusOK, LoginAdmin{
@@ -68,7 +79,6 @@ func (apicfg *ApiConfig) AdminLogin(w http.ResponseWriter, r *http.Request) {
 		Email:     admin.Email,
 		CreatedAt: admin.CreatedAt,
 		UpdatedAt: admin.UpdatedAt,
-		Token:     token,
 	})
 
 }
