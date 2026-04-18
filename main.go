@@ -36,9 +36,11 @@ func main() {
 		port = "8080"
 	}
 
+	baseURL := os.Getenv("BASE_URL")
+
 	dbURL := os.Getenv("DB_PATH")
 	if dbURL == "" {
-		log.Fatal("DB_URL should be set")
+		log.Fatal("DB_PATH should be set")
 	}
 	// connect to database
 	db, err := sql.Open("sqlite", dbURL)
@@ -147,7 +149,7 @@ func main() {
 
 	// run server in background
 	go func() {
-		fmt.Printf("Serving on: http://localhost:%s/\n", port)
+		fmt.Printf("Serving on: %s:%s/\n", baseURL, port)
 		if err := jadeServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("HTTP server error: %s\n", err)
 		}
