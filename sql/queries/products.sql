@@ -58,3 +58,8 @@ WHERE id = ?;
 
 -- name: DeleteProduct :exec
 DELETE FROM products WHERE id = ?;
+
+-- name: GetAllProductsAdmin :many
+SELECT * FROM products
+ORDER BY created_at DESC
+LIMIT ?;

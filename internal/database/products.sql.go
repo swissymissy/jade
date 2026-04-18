@@ -154,6 +154,47 @@ func (q *Queries) GetAllProducts(ctx context.Context, limit int64) ([]Product, e
 	return items, nil
 }
 
+const getAllProductsAdmin = `-- name: GetAllProductsAdmin :many
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+ORDER BY created_at DESC
+LIMIT ?
+`
+
+func (q *Queries) GetAllProductsAdmin(ctx context.Context, limit int64) ([]Product, error) {
+	rows, err := q.db.QueryContext(ctx, getAllProductsAdmin, limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []Product
+	for rows.Next() {
+		var i Product
+		if err := rows.Scan(
+			&i.ID,
+			&i.Name,
+			&i.Slug,
+			&i.Type,
+			&i.Price,
+			&i.Quantity,
+			&i.Description,
+			&i.IsAvailable,
+			&i.VideoUrl,
+			&i.CreatedAt,
+			&i.UpdatedAt,
+		); err != nil {
+			return nil, err
+		}
+		items = append(items, i)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const getProductByID = `-- name: GetProductByID :one
 SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
 WHERE id = ?

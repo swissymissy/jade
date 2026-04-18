@@ -129,6 +129,7 @@ func main() {
 	mux.HandleFunc("GET /api/products/filter", apicfg.HandlerFilterByPrice)
 
 	// admind routes - protected
+	mux.HandleFunc("GET /api/admin/products", middleware.AuthRequired(apicfg.HandlerGetAllProductsAdmin, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products", middleware.AuthRequired(apicfg.HandlerCreateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products/{id}/images", middleware.AuthRequired(apicfg.HandlerUploadImages, apicfg.JWTSecret))
 	mux.HandleFunc("POST /api/admin/products/{id}/video", middleware.AuthRequired(apicfg.HandlerUploadVideo, apicfg.JWTSecret))
