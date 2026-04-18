@@ -53,6 +53,7 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 			ID:        img.ID,
 			ProductID: img.ProductID,
 			S3Key:     img.S3Key,
+			ImageURL: apicfg.publicAssetURL(img.S3Key),
 			Cover:     img.Cover,
 			CreatedAt: img.CreatedAt,
 		})

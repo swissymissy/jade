@@ -12,5 +12,6 @@ type ApiConfig struct {
 	JWTSecret string
 	S3Bucket  string
 	S3Region  string
+	S3BaseURL string
 	S3Client  *s3.Client
 }

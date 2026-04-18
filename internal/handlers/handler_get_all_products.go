@@ -43,6 +43,7 @@ func (apicfg *ApiConfig) HandlerGetAllProducts(w http.ResponseWriter, r *http.Re
 				ID:        cover.ID,
 				ProductID: cover.ProductID,
 				S3Key:     cover.S3Key,
+				ImageURL: apicfg.publicAssetURL(cover.S3Key),
 				Cover:     cover.Cover,
 				CreatedAt: cover.CreatedAt,
 			}

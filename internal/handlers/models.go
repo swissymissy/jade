@@ -84,6 +84,7 @@ type UploadedImage struct {
 	ID        int64  `json:"id"`
 	ProductID int64  `json:"product_id"`
 	S3Key     string `json:"s3_key"`
+	ImageURL  string `json:"image_url"`
 	CreatedAt string `json:"created_at"`
 }
 
@@ -91,6 +92,7 @@ type ProductImage struct {
 	ID        int64  `json:"id"`
 	ProductID int64  `json:"product_id"`
 	S3Key     string `json:"s3_key"`
+	ImageURL  string `json:"image_url"`
 	Cover     int64  `json:"cover"`
 	CreatedAt string `json:"created_at"`
 }

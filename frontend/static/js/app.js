@@ -55,11 +55,10 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
 // === PRODUCT RENDERING ===
 const API_BASE = '/api';
-const S3_BASE = ''; // S3 bucket URL
 
 function renderProduct(product) {
   const coverSrc = product.cover_image
-    ? `${S3_BASE}/${product.cover_image.s3_key}`
+    ? product.cover_image.image_url
     : null;
 
   const safeName = escapeHTML(product.name);
