@@ -147,7 +147,7 @@ func main() {
 
 	// dev
 	mux.HandleFunc("POST /api/admin/reset", apicfg.HandlerResetAdmins)
-	mux.HandleFunc("GET /api/health", handler.HandlerHealthCheck)
+	mux.HandleFunc("GET /api/health", handlers.HandlerHealthCheck)
 
 	// run server in background
 	go func() {
