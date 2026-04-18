@@ -133,9 +133,7 @@
       <h2 class="pd-story-title" id="pdStoryTitle">Selected with care for the collection</h2>
       <p class="pd-story-text" id="pdStoryText">This product page now loads its details from the store catalog. Add a richer description in the admin dashboard and it will appear here automatically.</p>
     </div>
-    <div style="aspect-ratio: 4/3; border-radius: 2px; overflow: hidden;">
-      <img src="/static/covers/jade_cover.jpg" alt="Product detail" id="pdStoryImg" style="width:100%;height:100%;object-fit:cover;">
-    </div>
+    <div id="pdStoryMedia" style="aspect-ratio: 4/3; border-radius: 2px; overflow: hidden;"></div>
   </section>
 
   <!-- Related -->
@@ -292,20 +290,22 @@ function renderGallery(product){
 
   const mainWrap = document.getElementById('pdMain');
   const thumbs = document.getElementById('pdThumbs');
-  const storyImg = document.getElementById('pdStoryImg');
+  const storyWrap = document.getElementById('pdStoryMedia');
+  const coverImage = gallery.find(item => item.kind === 'image') || null;
+
+  if (storyWrap) {
+    storyWrap.innerHTML = coverImage
+      ? `<img src="${coverImage.src}" alt="${escapeHTML(coverImage.alt)}" id="pdStoryImg" style="width:100%;height:100%;object-fit:cover;">`
+      : productImagePlaceholder('No product photo');
+  }
 
   if (!gallery.length) {
     mainWrap.innerHTML = productImagePlaceholder('No product photo');
     thumbs.innerHTML = '';
-    if (storyImg) {
-      storyImg.src = '/static/covers/jade_cover.jpg';
-      storyImg.alt = 'Product detail';
-    }
     return;
   }
 
   const primary = gallery[0];
-  const secondaryImage = gallery.find(item => item.kind === 'image' && item !== primary) || (primary.kind === 'image' ? primary : null);
   mainWrap.innerHTML = primary.kind === 'video'
     ? `<video src="${primary.src}" controls playsinline preload="metadata" id="pdMainVideo" style="width:100%;height:100%;object-fit:cover;background:#000;"></video>`
     : `<img src="${primary.src}" alt="${escapeHTML(primary.alt)}" id="pdMainImg">`;
@@ -327,10 +327,6 @@ function renderGallery(product){
       </div>`;
   }).join('');
 
-  if (storyImg && secondaryImage) {
-    storyImg.src = secondaryImage.src;
-    storyImg.alt = secondaryImage.alt;
-  }
   bindGalleryThumbs();
 }
 
@@ -354,8 +350,8 @@ function renderProduct(product){
   document.getElementById('pdAttrUpdated').textContent = formatTimestamp(product.updated_at || product.created_at);
   document.getElementById('pdFitValue').textContent = String(product.quantity ?? 0);
   document.getElementById('pdStoryTitle').innerHTML = currentLang === 'vi'
-    ? `${escapeHTML(productType)} <em>được chọn kỹ lưỡng</em>`
-    : `${escapeHTML(productType)} <em>selected with care</em>`;
+    ? `${escapeHTML(productName)} <em>được chọn kỹ lưỡng</em>`
+    : `${escapeHTML(productName)} <em>selected with care</em>`;
   document.getElementById('pdStoryText').textContent = description || t(
     'This piece is part of Jade\'s hand-selected collection of natural stone jewelry.',
     'Sản phẩm này là một phần trong bộ sưu tập trang sức đá tự nhiên được Jade tuyển chọn thủ công.'

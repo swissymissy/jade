@@ -494,7 +494,10 @@ img { display:block; max-width:100%; }
   overflow: hidden;
   position: relative;
   border-radius: var(--radius);
+  border: 1px solid transparent;
+  transition: border-color .3s var(--ease);
 }
+.product-card:hover .product-image { border-color: var(--gold-500); }
 .product-image img {
   width: 100%; height: 100%;
   object-fit: cover;

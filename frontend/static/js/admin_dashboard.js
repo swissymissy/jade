@@ -9,7 +9,6 @@
     feedback: document.getElementById('dashboardFeedback'),
     products: document.getElementById('adminProducts'),
     search: document.getElementById('productSearch'),
-    refresh: document.getElementById('refreshDashboard'),
     statTotal: document.getElementById('statTotal'),
     statVisible: document.getElementById('statVisible'),
     statHidden: document.getElementById('statHidden'),
@@ -401,7 +400,6 @@
   }
 
   els.createForm.addEventListener('submit', handleCreateProduct);
-  els.refresh.addEventListener('click', () => loadProducts('Catalog refreshed.'));
   els.search.addEventListener('input', (event) => {
     state.search = event.currentTarget.value || '';
     renderProducts();
