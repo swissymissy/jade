@@ -36,9 +36,11 @@ func main() {
 		port = "8080"
 	}
 
+	baseURL := os.Getenv("BASE_URL")
+
 	dbURL := os.Getenv("DB_PATH")
 	if dbURL == "" {
-		log.Fatal("DB_URL should be set")
+		log.Fatal("DB_PATH should be set")
 	}
 	// connect to database
 	db, err := sql.Open("sqlite", dbURL)
@@ -136,17 +138,18 @@ func main() {
 	mux.HandleFunc("DELETE /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerDeleteProduct, apicfg.JWTSecret))
 	mux.HandleFunc("PUT /api/admin/products/{id}", middleware.AuthRequired(apicfg.HandlerUpdateProduct, apicfg.JWTSecret))
 	mux.HandleFunc("DELETE /api/admin/images/{id}", middleware.AuthRequired(apicfg.HandlerDeleteImage, apicfg.JWTSecret))
-	mux.HandleFunc("POST /api/admin/reset", apicfg.HandlerResetAdmins)
-	mux.HandleFunc("GET /api/admin/exists", apicfg.HandlerAdminExists)
-
+	
 	// auth
 	mux.HandleFunc("POST /api/admin/register", apicfg.HandlerCreateAdmin)
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
 	mux.HandleFunc("POST /api/admin/reset-password", apicfg.HandlerResetPassword)
+	mux.HandleFunc("GET /api/admin/exists", apicfg.HandlerAdminExists)
+	// dev
+	mux.HandleFunc("POST /api/admin/reset", apicfg.HandlerResetAdmins)
 
 	// run server in background
 	go func() {
-		fmt.Printf("Serving on: http://localhost:%s/\n", port)
+		fmt.Printf("Serving on: %s:%s/\n", baseURL, port)
 		if err := jadeServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Fatalf("HTTP server error: %s\n", err)
 		}

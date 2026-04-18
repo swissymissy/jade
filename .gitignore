@@ -1,2 +1,5 @@
 .env
 jade
+jade.db
+data
+.env.docker

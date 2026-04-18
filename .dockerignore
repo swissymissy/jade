@@ -1,0 +1,7 @@
+.env
+.git 
+jade 
+jade.db 
+*.db 
+Dockerfile
+.env.docker

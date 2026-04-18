@@ -118,6 +118,40 @@
     `;
   }
 
+  function productGalleryHTML(product) {
+    const images = Array.isArray(product.images) ? product.images : [];
+    if (!images.length) {
+      return `
+        <div class="admin-gallery-empty">
+          <p>No images uploaded yet. Use the upload card to add photos.</p>
+        </div>
+      `;
+    }
+
+    return `
+      <ul class="admin-gallery-grid">
+        ${images.map((image) => {
+          const isCover = Number(image.cover) === 1;
+          return `
+            <li class="admin-gallery-item${isCover ? ' is-cover' : ''}">
+              <img src="${image.image_url}" alt="${escapeHTML(product.name || 'Product image')}" loading="lazy">
+              ${isCover ? '<span class="admin-gallery-tag">Cover</span>' : ''}
+              <button type="button" class="admin-gallery-delete" data-delete-image="${image.id}" aria-label="Delete image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                  <path d="M4 7h16"/>
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/>
+                  <path d="M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/>
+                </svg>
+              </button>
+            </li>
+          `;
+        }).join('')}
+      </ul>
+    `;
+  }
+
   function renderProducts() {
     const products = filteredProducts();
     const total = state.products.length;
@@ -201,6 +235,14 @@
               <button type="button" class="btn btn-outline-dark" data-delete-product="${product.id}">Delete product</button>
             </div>
           </form>
+
+          <div class="admin-gallery" data-product-gallery="${product.id}">
+            <div class="admin-gallery-head">
+              <p class="eyebrow">Current images</p>
+              <h4>Uploaded photos</h4>
+            </div>
+            ${productGalleryHTML(product)}
+          </div>
 
           <div class="admin-media-grid">
             <form class="admin-upload-card" data-image-upload="${product.id}">
@@ -339,6 +381,28 @@
     }
   }
 
+  async function handleDeleteImage(button) {
+    const imageID = button.getAttribute('data-delete-image');
+    const item = button.closest('.admin-gallery-item');
+    const isCover = item?.classList.contains('is-cover');
+
+    const message = isCover
+      ? 'Delete this cover image? Another image will need to be set as the cover.'
+      : 'Delete this image?';
+    if (!window.confirm(message)) return;
+
+    setFeedback('');
+    button.disabled = true;
+
+    try {
+      await requestJSON(`/api/admin/images/${imageID}`, { method: 'DELETE' });
+      await loadProducts('Image deleted successfully.');
+    } catch (error) {
+      setFeedback(error.message, 'error');
+      button.disabled = false;
+    }
+  }
+
   async function handleImageUpload(form) {
     const productID = form.getAttribute('data-image-upload');
     const input = form.querySelector('input[name="images"]');
@@ -428,6 +492,12 @@
   });
 
   els.products.addEventListener('click', async (event) => {
+    const deleteImageButton = event.target.closest('[data-delete-image]');
+    if (deleteImageButton) {
+      await handleDeleteImage(deleteImageButton);
+      return;
+    }
+
     const deleteButton = event.target.closest('[data-delete-product]');
     if (!deleteButton) return;
     await handleDeleteProduct(deleteButton);
