@@ -144,8 +144,10 @@ func main() {
 	mux.HandleFunc("POST /api/admin/login", apicfg.AdminLogin)
 	mux.HandleFunc("POST /api/admin/reset-password", apicfg.HandlerResetPassword)
 	mux.HandleFunc("GET /api/admin/exists", apicfg.HandlerAdminExists)
+
 	// dev
 	mux.HandleFunc("POST /api/admin/reset", apicfg.HandlerResetAdmins)
+	mux.HandleFunc("GET /api/health", handler.HandlerHealthCheck)
 
 	// run server in background
 	go func() {
