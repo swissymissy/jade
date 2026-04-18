@@ -186,7 +186,11 @@ function toggleLang(){
     const tValue = el.getAttribute(`data-${currentLang}-placeholder`);
     if (tValue) el.placeholder = tValue;
   });
-  renderProducts(renderedProducts);
+  if (renderedProducts.length) {
+    renderProducts(renderedProducts);
+  } else {
+    loadProducts();
+  }
 }
 
 // === HERO CAROUSEL ===
@@ -221,14 +225,6 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 // === PRODUCTS ===
 const API_BASE = '/api';
-const PLACEHOLDER_PRODUCTS = [
-  { name: 'Lavender Mist', name_vi: 'Sương Lavender', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 180, tag: 'One of a kind', tag_vi: 'Độc bản', tag_color: 'gold', image: 'covers/jade-cover-1.jpg', slug: 'lavender-mist' },
-  { name: 'Morning Dew', name_vi: 'Sương Sớm', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 165, image: 'covers/jade-cover.jpg', slug: 'morning-dew' },
-  { name: 'Garden Stones', name_vi: 'Đá Vườn', type: 'Agate Beads', type_vi: 'Hạt mã não', price: 92, tag: 'New', tag_vi: 'Mới', image: 'covers/cover-3.jpg', slug: 'garden-stones' },
-  { name: 'Soft Green', name_vi: 'Xanh Nhẹ', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 210, image: null, slug: 'soft-green' },
-  { name: 'River Stone', name_vi: 'Đá Sông', type: 'Agate Beads', type_vi: 'Hạt mã não', price: 78, image: null, slug: 'river-stone' },
-  { name: 'Quiet Light', name_vi: 'Ánh Lặng', type: 'Jade Bangle', type_vi: 'Vòng ngọc', price: 245, tag: 'Limited', tag_vi: 'Giới hạn', tag_color: 'gold', image: null, slug: 'quiet-light' },
-];
 
 function renderProduct(p) {
   const safeName = escapeHTML(currentLang === 'vi' && p.name_vi ? p.name_vi : p.name);
@@ -288,13 +284,19 @@ async function loadProducts(){
     const response = await fetch(`${API_BASE}/products`, { signal: AbortSignal.timeout(2500) });
     if (!response.ok) throw new Error('no api');
     const products = await response.json();
-    if (!Array.isArray(products) || products.length === 0) throw new Error('empty');
+    const list = Array.isArray(products) ? products : [];
 
-    catalogProducts = products;
-    renderProducts(products);
+    catalogProducts = list;
+    if (!list.length) {
+      renderedProducts = [];
+      renderCatalogMessage(t('No products available yet.', 'Chưa có sản phẩm nào.'));
+      return;
+    }
+    renderProducts(list);
   } catch (err) {
-    catalogProducts = PLACEHOLDER_PRODUCTS;
-    renderProducts(PLACEHOLDER_PRODUCTS);
+    catalogProducts = [];
+    renderedProducts = [];
+    renderCatalogMessage(t('Unable to load products. Please try again later.', 'Không thể tải sản phẩm. Vui lòng thử lại.'));
   }
 }
 

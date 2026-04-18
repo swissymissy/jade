@@ -70,7 +70,7 @@ type ProductDetail struct {
 	Quantity    int64          `json:"quantity"`
 	Description sql.NullString `json:"description"`
 	IsAvailable int64          `json:"is_available"`
-	VideoUrl    sql.NullString `json:"video_url"`
+	VideoUrl    string         `json:"video_url"`
 	CreatedAt   string         `json:"created_at"`
 	UpdatedAt   string         `json:"updated_at"`
 	Images      []ProductImage `json:"images"`

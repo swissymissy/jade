@@ -236,10 +236,14 @@ function bindGalleryThumbs(){
       if (!src) return;
       document.querySelectorAll('.pd-thumb').forEach(x => x.classList.remove('active'));
       t.classList.add('active');
-      const main = document.getElementById('pdMainImg');
-      if (main) {
-        main.src = src;
-        main.alt = t.getAttribute('data-alt') || 'Product image';
+      const main = document.getElementById('pdMain');
+      if (!main) return;
+      const kind = t.getAttribute('data-kind') || 'image';
+      const alt = t.getAttribute('data-alt') || 'Product image';
+      if (kind === 'video') {
+        main.innerHTML = `<video src="${src}" controls autoplay playsinline preload="metadata" id="pdMainVideo" style="width:100%;height:100%;object-fit:cover;background:#000;"></video>`;
+      } else {
+        main.innerHTML = `<img src="${src}" alt="${escapeHTML(alt)}" id="pdMainImg">`;
       }
     });
   });
@@ -271,10 +275,20 @@ function renderGallery(product){
   images.sort((a, b) => Number(b.cover || 0) - Number(a.cover || 0));
   const gallery = images
     .map(img => ({
+      kind: 'image',
       src: img.image_url,
       alt: product.name || 'Product image',
     }))
     .filter(img => img.src);
+
+  const videoURL = typeof product.video_url === 'string' ? product.video_url : '';
+  if (videoURL) {
+    gallery.push({
+      kind: 'video',
+      src: videoURL,
+      alt: `${product.name || 'Product'} video`,
+    });
+  }
 
   const mainWrap = document.getElementById('pdMain');
   const thumbs = document.getElementById('pdThumbs');
@@ -291,15 +305,31 @@ function renderGallery(product){
   }
 
   const primary = gallery[0];
-  const secondary = gallery[1] || primary;
-  mainWrap.innerHTML = `<img src="${primary.src}" alt="${escapeHTML(primary.alt)}" id="pdMainImg">`;
-  thumbs.innerHTML = gallery.map((img, idx) => `
-    <div class="pd-thumb${idx === 0 ? ' active' : ''}" data-src="${img.src}" data-alt="${escapeHTML(img.alt)}">
-      <img src="${img.src}" alt="${escapeHTML(img.alt)}">
-    </div>`).join('');
-  if (storyImg) {
-    storyImg.src = secondary.src;
-    storyImg.alt = secondary.alt;
+  const secondaryImage = gallery.find(item => item.kind === 'image' && item !== primary) || (primary.kind === 'image' ? primary : null);
+  mainWrap.innerHTML = primary.kind === 'video'
+    ? `<video src="${primary.src}" controls playsinline preload="metadata" id="pdMainVideo" style="width:100%;height:100%;object-fit:cover;background:#000;"></video>`
+    : `<img src="${primary.src}" alt="${escapeHTML(primary.alt)}" id="pdMainImg">`;
+
+  thumbs.innerHTML = gallery.map((item, idx) => {
+    const activeClass = idx === 0 ? ' active' : '';
+    if (item.kind === 'video') {
+      return `
+        <div class="pd-thumb pd-thumb-video${activeClass}" data-src="${item.src}" data-alt="${escapeHTML(item.alt)}" data-kind="video">
+          <video src="${item.src}" muted preload="metadata" playsinline></video>
+          <span class="pd-thumb-play" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          </span>
+        </div>`;
+    }
+    return `
+      <div class="pd-thumb${activeClass}" data-src="${item.src}" data-alt="${escapeHTML(item.alt)}" data-kind="image">
+        <img src="${item.src}" alt="${escapeHTML(item.alt)}">
+      </div>`;
+  }).join('');
+
+  if (storyImg && secondaryImage) {
+    storyImg.src = secondaryImage.src;
+    storyImg.alt = secondaryImage.alt;
   }
   bindGalleryThumbs();
 }

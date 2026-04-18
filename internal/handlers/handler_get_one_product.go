@@ -59,6 +59,11 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		})
 	}
 
+	videoURL := ""
+	if product.VideoUrl.Valid {
+		videoURL = apicfg.publicAssetURL(product.VideoUrl.String)
+	}
+
 	ResponseWithJSON(w, http.StatusOK, ProductDetail{
 		ID:          product.ID,
 		Name:        product.Name,
@@ -68,7 +73,7 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		Quantity:    product.Quantity,
 		Description: product.Description,
 		IsAvailable: product.IsAvailable,
-		VideoUrl:    product.VideoUrl,
+		VideoUrl:    videoURL,
 		CreatedAt:   product.CreatedAt,
 		UpdatedAt:   product.UpdatedAt,
 		Images:      imageList,
