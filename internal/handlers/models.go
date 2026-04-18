@@ -44,6 +44,7 @@ type AdminProductListing struct {
 	CreatedAt   string         `json:"created_at"`
 	UpdatedAt   string         `json:"updated_at"`
 	CoverImage  *ProductImage  `json:"cover_image"`
+	Images      []ProductImage `json:"images"`
 }
 
 // ====Product================================

@@ -43,6 +43,24 @@ func (apicfg *ApiConfig) HandlerGetAllProductsAdmin(w http.ResponseWriter, r *ht
 			}
 		}
 
+		images, err := apicfg.DB.GetImagesByProductID(r.Context(), p.ID)
+		if err != nil {
+			fmt.Printf("Error getting images for product %d: %s\n", p.ID, err)
+			ResponseWithError(w, http.StatusInternalServerError, "Failed to fetch product images")
+			return
+		}
+		imageList := make([]ProductImage, 0, len(images))
+		for _, img := range images {
+			imageList = append(imageList, ProductImage{
+				ID:        img.ID,
+				ProductID: img.ProductID,
+				S3Key:     img.S3Key,
+				ImageURL:  apicfg.publicAssetURL(img.S3Key),
+				Cover:     img.Cover,
+				CreatedAt: img.CreatedAt,
+			})
+		}
+
 		productList = append(productList, AdminProductListing{
 			ID:          p.ID,
 			Name:        p.Name,
@@ -56,6 +74,7 @@ func (apicfg *ApiConfig) HandlerGetAllProductsAdmin(w http.ResponseWriter, r *ht
 			CreatedAt:   p.CreatedAt,
 			UpdatedAt:   p.UpdatedAt,
 			CoverImage:  coverImage,
+			Images:      imageList,
 		})
 	}
 
