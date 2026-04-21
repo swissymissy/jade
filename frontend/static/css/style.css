@@ -890,6 +890,7 @@ img { display:block; max-width:100%; }
   color: var(--ink-600);
   font-weight: 300;
   max-width: 56ch;
+  white-space: pre-line;
 }
 
 .pd-attrs {
@@ -985,7 +986,7 @@ img { display:block; max-width:100%; }
 }
 .pd-story-title { font-family: var(--font-display); font-size: clamp(28px, 3.4vw, 44px); font-weight: 300; color: var(--jade-900); line-height: 1.2; }
 .pd-story-title em { font-style: italic; color: var(--gold-600); }
-.pd-story-text { font-size: 15px; line-height: 1.9; color: var(--ink-600); font-weight: 300; max-width: 52ch; margin-top: 16px; }
+.pd-story-text { font-size: 15px; line-height: 1.9; color: var(--ink-600); font-weight: 300; max-width: 52ch; margin-top: 16px; white-space: pre-line; }
 
 .pd-related {
   padding: clamp(72px, 10vw, 120px) var(--edge);

@@ -69,6 +69,7 @@ func (apicfg *ApiConfig) HandlerGetAllProductsAdmin(w http.ResponseWriter, r *ht
 			Price:       p.Price,
 			Quantity:    p.Quantity,
 			Description: p.Description,
+			About:       p.About,
 			IsAvailable: p.IsAvailable,
 			VideoUrl:    p.VideoUrl,
 			CreatedAt:   p.CreatedAt,

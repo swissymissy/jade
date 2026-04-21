@@ -62,6 +62,7 @@ func (apicfg *ApiConfig) HandlerGetProductBySlug(w http.ResponseWriter, r *http.
 		Price:       product.Price,
 		Quantity:    product.Quantity,
 		Description: product.Description,
+		About:       product.About,
 		IsAvailable: product.IsAvailable,
 		VideoUrl:    videoURL,
 		CreatedAt:   product.CreatedAt,

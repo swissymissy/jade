@@ -33,8 +33,8 @@ ORDER BY created_at DESC
 LIMIT ?;
 
 -- name: CreateProduct :one
-INSERT INTO products (name, slug, type, price, quantity, description, video_url)
-VALUES (?, ?, ?, ?, ?, ?, ?)
+INSERT INTO products (name, slug, type, price, quantity, description, about, video_url)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
 RETURNING *;
 
 -- name: UpdateProduct :one
@@ -45,6 +45,7 @@ SET name = ?,
     price = ?,
     quantity = ?,
     description = ?,
+    about = ?,
     video_url = ?,
     is_available = ?,
     updated_at = datetime('now')

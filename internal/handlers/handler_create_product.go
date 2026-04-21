@@ -49,6 +49,7 @@ func (apicfg *ApiConfig) HandlerCreateProduct(w http.ResponseWriter, r *http.Req
 		Price:       newItem.Price,
 		Quantity:    newItem.Quantity,
 		Description: ToNullString(newItem.Description),
+		About:       ToNullString(newItem.About),
 		VideoUrl:    sql.NullString{String: "", Valid: false},
 	})
 	if err != nil {
@@ -65,6 +66,7 @@ func (apicfg *ApiConfig) HandlerCreateProduct(w http.ResponseWriter, r *http.Req
 		Price:       item.Price,
 		Quantity:    item.Quantity,
 		Description: item.Description,
+		About:       item.About,
 		VideoUrl:    item.VideoUrl,
 		CreatedAt:   item.CreatedAt,
 		UpdatedAt:   item.UpdatedAt,

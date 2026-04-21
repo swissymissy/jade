@@ -39,6 +39,7 @@ type AdminProductListing struct {
 	Price       float64        `json:"price"`
 	Quantity    int64          `json:"quantity"`
 	Description sql.NullString `json:"description"`
+	About       sql.NullString `json:"about"`
 	IsAvailable int64          `json:"is_available"`
 	VideoUrl    sql.NullString `json:"video_url"`
 	CreatedAt   string         `json:"created_at"`
@@ -56,6 +57,7 @@ type Product struct {
 	Price       float64        `json:"price"`
 	Quantity    int64          `json:"quantity"`
 	Description sql.NullString `json:"description"`
+	About       sql.NullString `json:"about"`
 	IsAvailable int64          `json:"is_available"`
 	VideoUrl    sql.NullString `json:"video"`
 	CreatedAt   string         `json:"created_at"`
@@ -70,6 +72,7 @@ type ProductDetail struct {
 	Price       float64        `json:"price"`
 	Quantity    int64          `json:"quantity"`
 	Description sql.NullString `json:"description"`
+	About       sql.NullString `json:"about"`
 	IsAvailable int64          `json:"is_available"`
 	VideoUrl    string         `json:"video_url"`
 	CreatedAt   string         `json:"created_at"`
@@ -94,6 +97,7 @@ type ProductCreateRequest struct {
 	Price       float64 `json:"price"`
 	Quantity    int64   `json:"quantity"`
 	Description string  `json:"description"`
+	About       string  `json:"about"`
 }
 
 type UploadedImage struct {
@@ -119,6 +123,7 @@ type ProductUpdateRequest struct {
 	Price       float64 `json:"price"`
 	Quantity    int64   `json:"quantity"`
 	Description string  `json:"description"`
+	About       string  `json:"about"`
 	IsAvailable int64   `json:"is_available"`
 }
 

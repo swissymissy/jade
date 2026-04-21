@@ -175,6 +175,7 @@
 
     els.products.innerHTML = products.map((product) => {
       const description = readNullString(product.description);
+      const about = readNullString(product.about);
       const videoKey = readNullString(product.video_url);
       const live = Number(product.is_available) === 1;
 
@@ -227,8 +228,12 @@
               <input type="text" value="${escapeHTML(product.slug || slugify(product.name))}" readonly data-slug-preview>
             </label>
             <label class="admin-field-wide">
-              <span>Description</span>
-              <textarea name="description" rows="4" placeholder="Add product details, stone notes, sizing, and styling tips.">${escapeHTML(description)}</textarea>
+              <span>Description (tech specs)</span>
+              <textarea name="description" rows="4" placeholder="Gemstone, color, size, certificate — the factual details.">${escapeHTML(description)}</textarea>
+            </label>
+            <label class="admin-field-wide">
+              <span>About this piece (story / hook)</span>
+              <textarea name="about" rows="4" placeholder="The sensory hook — how the piece feels, the mood, what makes it special.">${escapeHTML(about)}</textarea>
             </label>
             <div class="admin-form-actions">
               <button type="submit" class="btn btn-dark">Save changes</button>
@@ -320,6 +325,7 @@
           price: Number(formData.get('price') || 0),
           quantity: Number(formData.get('quantity') || 0),
           description: String(formData.get('description') || '').trim(),
+          about: String(formData.get('about') || '').trim(),
         }),
       });
 
@@ -348,6 +354,7 @@
           price: Number(formData.get('price') || 0),
           quantity: Number(formData.get('quantity') || 0),
           description: String(formData.get('description') || '').trim(),
+          about: String(formData.get('about') || '').trim(),
           is_available: Number(formData.get('is_available') || 0),
         }),
       });
