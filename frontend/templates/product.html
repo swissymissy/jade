@@ -332,6 +332,7 @@ function renderGallery(product){
 function renderProduct(product){
   currentProduct = product;
   const description = readNullString(product.description);
+  const about = readNullString(product.about);
   const productName = product.name || 'Product';
   const productType = product.type || 'Jade Piece';
 
@@ -351,7 +352,7 @@ function renderProduct(product){
   document.getElementById('pdStoryTitle').innerHTML = currentLang === 'vi'
     ? `${escapeHTML(productName)} <em>được chọn kỹ lưỡng</em>`
     : `${escapeHTML(productName)} <em>selected with care</em>`;
-  document.getElementById('pdStoryText').textContent = description || t(
+  document.getElementById('pdStoryText').textContent = about || t(
     'This piece is part of Jade\'s hand-selected collection of natural stone jewelry.',
     'Sản phẩm này là một phần trong bộ sưu tập trang sức đá tự nhiên được Jade tuyển chọn thủ công.'
   );

@@ -29,6 +29,7 @@ type Product struct {
 	VideoUrl    sql.NullString
 	CreatedAt   string
 	UpdatedAt   string
+	About       sql.NullString
 }
 
 type ProductImage struct {

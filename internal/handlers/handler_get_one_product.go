@@ -72,6 +72,7 @@ func (apicfg *ApiConfig) HandlerGetOneProduct(w http.ResponseWriter, r *http.Req
 		Price:       product.Price,
 		Quantity:    product.Quantity,
 		Description: product.Description,
+		About:       product.About,
 		IsAvailable: product.IsAvailable,
 		VideoUrl:    videoURL,
 		CreatedAt:   product.CreatedAt,

@@ -11,9 +11,9 @@ import (
 )
 
 const createProduct = `-- name: CreateProduct :one
-INSERT INTO products (name, slug, type, price, quantity, description, video_url)
-VALUES (?, ?, ?, ?, ?, ?, ?)
-RETURNING id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at
+INSERT INTO products (name, slug, type, price, quantity, description, about, video_url)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+RETURNING id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about
 `
 
 type CreateProductParams struct {
@@ -23,6 +23,7 @@ type CreateProductParams struct {
 	Price       float64
 	Quantity    int64
 	Description sql.NullString
+	About       sql.NullString
 	VideoUrl    sql.NullString
 }
 
@@ -34,6 +35,7 @@ func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (P
 		arg.Price,
 		arg.Quantity,
 		arg.Description,
+		arg.About,
 		arg.VideoUrl,
 	)
 	var i Product
@@ -49,6 +51,7 @@ func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (P
 		&i.VideoUrl,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.About,
 	)
 	return i, err
 }
@@ -63,7 +66,7 @@ func (q *Queries) DeleteProduct(ctx context.Context, id int64) error {
 }
 
 const filterProductByPrice = `-- name: FilterProductByPrice :many
-SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about FROM products
 WHERE is_available = 1
 AND price >= ?
 AND price <= ?
@@ -98,6 +101,7 @@ func (q *Queries) FilterProductByPrice(ctx context.Context, arg FilterProductByP
 			&i.VideoUrl,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.About,
 		); err != nil {
 			return nil, err
 		}
@@ -113,7 +117,7 @@ func (q *Queries) FilterProductByPrice(ctx context.Context, arg FilterProductByP
 }
 
 const getAllProducts = `-- name: GetAllProducts :many
-SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about FROM products
 WHERE is_available = 1
 ORDER BY created_at DESC
 LIMIT ?
@@ -140,6 +144,7 @@ func (q *Queries) GetAllProducts(ctx context.Context, limit int64) ([]Product, e
 			&i.VideoUrl,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.About,
 		); err != nil {
 			return nil, err
 		}
@@ -155,7 +160,7 @@ func (q *Queries) GetAllProducts(ctx context.Context, limit int64) ([]Product, e
 }
 
 const getAllProductsAdmin = `-- name: GetAllProductsAdmin :many
-SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about FROM products
 ORDER BY created_at DESC
 LIMIT ?
 `
@@ -181,6 +186,7 @@ func (q *Queries) GetAllProductsAdmin(ctx context.Context, limit int64) ([]Produ
 			&i.VideoUrl,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.About,
 		); err != nil {
 			return nil, err
 		}
@@ -196,7 +202,7 @@ func (q *Queries) GetAllProductsAdmin(ctx context.Context, limit int64) ([]Produ
 }
 
 const getProductByID = `-- name: GetProductByID :one
-SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about FROM products
 WHERE id = ?
 `
 
@@ -215,12 +221,13 @@ func (q *Queries) GetProductByID(ctx context.Context, id int64) (Product, error)
 		&i.VideoUrl,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.About,
 	)
 	return i, err
 }
 
 const getProductBySlug = `-- name: GetProductBySlug :one
-SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about FROM products
 WHERE slug = ? AND is_available = 1
 `
 
@@ -239,12 +246,13 @@ func (q *Queries) GetProductBySlug(ctx context.Context, slug string) (Product, e
 		&i.VideoUrl,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.About,
 	)
 	return i, err
 }
 
 const searchProduct = `-- name: SearchProduct :many
-SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at FROM products
+SELECT id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about FROM products
 WHERE is_available = 1
 AND (
     name LIKE '%'|| ? || '%'
@@ -291,6 +299,7 @@ func (q *Queries) SearchProduct(ctx context.Context, arg SearchProductParams) ([
 			&i.VideoUrl,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.About,
 		); err != nil {
 			return nil, err
 		}
@@ -313,11 +322,12 @@ SET name = ?,
     price = ?,
     quantity = ?,
     description = ?,
+    about = ?,
     video_url = ?,
     is_available = ?,
     updated_at = datetime('now')
 WHERE id = ?
-RETURNING id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at
+RETURNING id, name, slug, type, price, quantity, description, is_available, video_url, created_at, updated_at, about
 `
 
 type UpdateProductParams struct {
@@ -327,6 +337,7 @@ type UpdateProductParams struct {
 	Price       float64
 	Quantity    int64
 	Description sql.NullString
+	About       sql.NullString
 	VideoUrl    sql.NullString
 	IsAvailable int64
 	ID          int64
@@ -340,6 +351,7 @@ func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (P
 		arg.Price,
 		arg.Quantity,
 		arg.Description,
+		arg.About,
 		arg.VideoUrl,
 		arg.IsAvailable,
 		arg.ID,
@@ -357,6 +369,7 @@ func (q *Queries) UpdateProduct(ctx context.Context, arg UpdateProductParams) (P
 		&i.VideoUrl,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.About,
 	)
 	return i, err
 }
