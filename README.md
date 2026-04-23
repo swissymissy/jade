@@ -126,8 +126,11 @@ jade/
    git clone https://github.com/swissymissy/jade.git
    cd jade
    ```
-
-2. Create a `.env` file and fill in your environmant variables:
+2. Get dependencies:
+   ```bash
+   go mod download
+   ```
+3. Create a `.env` file and fill in your environmant variables:
    ```
    PORT="8080"
    PLATFORM="dev"
